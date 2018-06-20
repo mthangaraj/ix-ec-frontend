@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="22px" height="23px" viewBox="0 0 22 23" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 46.2 (44496) - http://www.bohemiancoding.com/sketch -->
+    <title>bin 1.3.3.1</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Demo-Screens" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="CSV-Upload" transform="translate(-1342.000000, -293.000000)">
+            <g id="bin-1.3.3.1" transform="translate(1342.000000, 294.000000)">
+                <g id="Outline_Icons_1_" transform="translate(1.000000, 0.000000)" stroke-linecap="round" stroke="#000000" stroke-linejoin="round">
+                    <g id="Outline_Icons">
+                        <g id="Group">
+                            <rect id="Rectangle-path" x="2.27348328" y="3.13829848" width="14.550293" height="17.9331342"></rect>
+                            <rect id="Rectangle-path" x="5.91105652" y="0.448328355" width="7.27514648" height="2.68997013"></rect>
+                            <path d="M0,3.13829848 L20.0066528,3.13829848" id="Shape"></path>
+                            <path d="M5.91105652,6.27659697 L5.91105652,17.0364775" id="Shape"></path>
+                            <path d="M9.54862976,6.27659697 L9.54862976,17.0364775" id="Shape"></path>
+                            <path d="M13.186203,6.27659697 L13.186203,17.0364775" id="Shape"></path>
+                        </g>
+                    </g>
+                </g>
+                <g id="Frames-24px">
+                    <rect id="Rectangle-path" x="0" y="0" width="21.519761" height="21.519761"></rect>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

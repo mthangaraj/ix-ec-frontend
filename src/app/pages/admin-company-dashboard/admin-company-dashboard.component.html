@@ -1,0 +1,219 @@
+<header class="header admin">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" id="drop_dwn_content" aria-labelledby="dropdownMenu">
+            <div class="reports-actions-block">
+                <div class="next-report-date-block">
+                    <p class="title">Next Reporting Date:</p>
+                    <p class="date" id="next_rprt_period">{{next_reporting_peroid | date:'MMMM d'}}</p>
+                </div>
+                <a [routerLink]="['/admin-previous-report', company_id, company_name]" id="prev_rprt_btn" class="btn prev-report-btn">Previous Reports</a>
+                <a [routerLink]="['/admin-company-dashboard',company_id,company_name]" id="overview_btn" class="btn financial-review-btn active">Financial Overview</a>
+            </div>
+        </div>
+    </div>
+    <div class="expresso-logo-block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <div class="fixed-dropdown-block navbar-right dashboard-dropdown">
+        <div class="dropdown" id="contact-us">
+            <a id="dLabel" role="button" data-toggle="dropdown"  class="">
+                Contact Us <span class="caret"></span>
+            </a>
+            <ul *ngIf="ecpressoContactCount > 0" id="contact_list" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li *ngFor="let contact of espressoContacts">
+                    <p class="title">{{contact.title}}</p>
+                    <p class="details">
+                        {{contact.first_name}} {{contact.last_name}}
+                        <br> {{contact.phone}}
+                        <br> {{contact.email}}
+                    </p>
+                </li>
+            </ul>
+            <ul *ngIf="ecpressoContactCount == 0" id="no_contact" class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li *ngFor="let contact of espressoContacts">
+                    <p class="details">{{espressoContactNoData}}</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div class="result-header">
+    <p id="company_name">{{company_name}}</p>
+</div>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+        <div class="reports-actions-block">
+            <div class="next-report-date-block">
+                <p class="title">Next Reporting Date:</p>
+                <p class="date" id="next_report_period">{{next_reporting_peroid | date:'MMMM d'}}</p>
+            </div>
+            <a [routerLink]="['/admin-previous-report', company_id, company_name]" id="previous_reports" class="btn prev-report-btn">Previous Reports</a>
+            <a [routerLink]="['/admin-company-dashboard',company_id,company_name]" id="financial_overview" class="btn financial-review-btn active">Financial Overview</a>
+        </div>
+    </div>
+</div>
+<div class="clearfix page-container admin-dashboard-container">
+    <br>
+    <h1 class="page-title">Financial Overview</h1>
+    <div class="dashboard-tabs-block">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs coa-sheet-tabs" role="tablist" id="coaTabs">
+            <li role="presentation" class="active">
+                <div class="tab-separator">
+                    <span></span>
+                </div>
+                <a href="#balance-sheet" id="balance_tab" aria-controls="balance-sheet" role="tab" data-toggle="tab">
+                    <span>1</span>
+                    Balance Sheet
+                </a>
+            </li>
+            <li role="presentation">
+                <div class="tab-separator">
+                    <span></span>
+                </div>
+                <a href="#income-statement" id="income_tab" aria-controls="income-statement" role="tab" data-toggle="tab"><span>2</span>Income Statement</a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content dashboard-tab-content">
+            <div role="tabpanel" class="tab-pane active" id="balance-sheet">
+                <div class="statement-table-block income">
+                    <ul class='liClass'>
+                        <li class="nameSize">Assets</li>
+                        <li>Total Current Assets</li>
+                        <li>Cash</li>
+                        <li>Accounts Receivables</li>
+                        <li>SRED/ITC Receivable</li>
+                        <li>Other Current Assets</li>
+                        <li>Fixed Assets</li>
+                        <li>Patents & Intangible Assets</li>
+                        <li>Other Assets</li>
+                        <li>Net Income</li>
+                        <li class="backColor">Total Assets</li>
+                    </ul>
+                    <ul *ngFor="let fields of balance_sheet | groupBy:'period_ending'" class="value">
+                        <li id="key_1" >{{fields.key}}</li>
+                        <li id="asset_tot_cur" *ngFor="let data of balance_sheet | Search:'asset_tot_cur':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_cash" *ngFor="let data of balance_sheet | Search:'asset_cash':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_ar" *ngFor="let data of balance_sheet | Search:'asset_ar':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_itc" *ngFor="let data of balance_sheet | Search:'asset_itc':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_other_cur" *ngFor="let data of balance_sheet | Search:'asset_other_cur':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_fixed" *ngFor="let data of balance_sheet | Search:'asset_fixed':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_intangible" *ngFor="let data of balance_sheet | Search:'asset_intangible':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_other_lt" *ngFor="let data of balance_sheet | Search:'asset_other_lt':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="net_income" *ngFor="let data of balance_sheet | Search:'net_income':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="asset_total" *ngFor="let data of balance_sheet | Search:'asset_total':fields.key; let i = index;" class="backColor"> {{data.value}}</li>
+                    </ul>
+                </div>
+                <div class="statement-table-block income">
+                    <ul class='liClass'>
+                        <li>Liabilities & Equity</li>
+                        <li>Total Current Liabilities</li>
+                        <li>Total Liabilities</li>
+                        <li>Total Equity</li>
+                        <li>Accounts Payable and Accrued Liabilities</li>
+                        <li>Bank Debt</li>
+                        <li>Other Current Liabilities</li>
+                        <li>Espresso Debt Outstanding</li>
+                        <li>Senior Secured Debt (to Espresso)</li>
+                        <li>Subordinated Debt (to Espresso)</li>
+                        <li>Shareholder Loans</li>
+                        <li>Deferred Revenue</li>
+                        <li>Other Liabilities</li>
+                        <li>Share Capital and Contributed Capital</li>
+                        <li>Minority Equity Position</li>
+                        <li>Equity Portion of LT Debt</li>
+                        <li>Retained Earnings (Loss)</li>
+                        <li class="backColor">Total L&E</li>
+                    </ul>
+                    <ul *ngFor="let fields of balance_sheet | groupBy:'period_ending'" class="value">
+                        <li id="key_2" >{{fields.key}}</li>
+                        <li id="liab_tot_cur" *ngFor="let data of balance_sheet | Search:'liab_tot_cur':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_total" *ngFor="let data of balance_sheet | Search:'liab_total':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="equity_total" *ngFor="let data of balance_sheet | Search:'equity_total':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_ap" *ngFor="let data of balance_sheet | Search:'liab_ap':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_bank_debt" *ngFor="let data of balance_sheet | Search:'liab_bank_debt':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_other_cur" *ngFor="let data of balance_sheet | Search:'liab_other_cur':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_espresso" *ngFor="let data of balance_sheet | Search:'liab_espresso':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_senior" *ngFor="let data of balance_sheet | Search:'liab_senior':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_subordinate" *ngFor="let data of balance_sheet | Search:'liab_subordinate':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_shareholder_loans" *ngFor="let data of balance_sheet | Search:'liab_shareholder_loans':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_deferred_rev" *ngFor="let data of balance_sheet | Search:'liab_deferred_rev':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="liab_other_lt" *ngFor="let data of balance_sheet | Search:'liab_other_lt':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="equity_share_capital" *ngFor="let data of balance_sheet | Search:'equity_share_capital':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="equity_minority_position" *ngFor="let data of balance_sheet | Search:'equity_minority_position':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="equity_liab_portion" *ngFor="let data of balance_sheet | Search:'equity_liab_portion':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="equity_retained_earnings" *ngFor="let data of balance_sheet | Search:'equity_retained_earnings':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="equity_liab_total" *ngFor="let data of balance_sheet | Search:'equity_liab_total':fields.key; let i = index;" class="backColor"> {{data.value}}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="income-statement">
+                <div class="statement-table-block income">
+                    <ul class='liClass'>
+                        <li class="nameSize">Income</li>
+                        <li>EBITDA</li>
+                        <li class="backColor">Net Income</li>
+                        <li>Sales and Marketing Expenses</li>
+                        <li class="backColor">Gross Profit</li>
+                        <li>Non-Recurring Revenues</li>
+                        <li>Recurring Revenues</li>
+
+                        <li class="backColor">Total Revenues</li>
+                    </ul>
+                    <ul *ngFor="let fields of income_statement | groupBy:'period_ending'"  class="value">
+                        <li id="key_3" >{{fields.key}}</li>
+                        <li id="ebitda" *ngFor="let data of income_statement | Search:'ebitda':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="net_income" *ngFor="let data of income_statement | Search:'net_income':fields.key; let i = index;" class="backColor"> {{data.value}}</li>
+                        <li id="exp_sales" *ngFor="let data of income_statement | Search:'exp_sales':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="gross_profit" *ngFor="let data of income_statement | Search:'gross_profit':fields.key; let i = index;" class="backColor"> {{data.value}}</li>
+                        <li id="rev_nonrecurring" *ngFor="let data of income_statement | Search:'rev_nonrecurring':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="rev_recurring" *ngFor="let data of income_statement | Search:'rev_recurring':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="rev_total" *ngFor="let data of income_statement | Search:'rev_total':fields.key; let i = index;" class="backColor"> {{data.value}}</li>
+                    </ul>
+                </div>
+                <div class="statement-table-block income">
+                    <ul class='liClass'>
+                        <li class="nameSize">Expenses</li>
+                        <li >R&D (Gross - excluding SRED)</li>
+                        <li>G&A</li>
+                        <li>SRED</li>
+                        <li>Interest Income (Expense)</li>
+                        <li>IRAP/Grants Received</li>
+                        <li>Depreciation & Amortization</li>
+                        <li>Cost of Goods Sold</li>
+                        <li class="backColor">Other Income (Expenses)</li>
+                    </ul>
+                    <ul *ngFor="let fields of income_statement | groupBy:'period_ending'" class="value">
+                        <li id="key_4" >{{fields.key}}</li>
+                        <li id="exp_randd" *ngFor="let data of income_statement | Search:'exp_randd':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="exp_ganda" *ngFor="let data of income_statement | Search:'exp_ganda':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="exp_sred" *ngFor="let data of income_statement | Search:'exp_sred':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="exp_interest" *ngFor="let data of income_statement | Search:'exp_interest':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="exp_grants" *ngFor="let data of income_statement | Search:'exp_grants':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="exp_dep_amort" *ngFor="let data of income_statement | Search:'exp_dep_amort':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="exp_cogs" *ngFor="let data of income_statement | Search:'exp_cogs':fields.key; let i = index;"> {{data.value}}</li>
+                        <li id="exp_other" *ngFor="let data of income_statement | Search:'exp_other':fields.key; let i = index;" class="backColor"> {{data.value}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="animated-loader-sheen" *ngIf="showLoading">
+    <div class="loader">
+        <div class="dot-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+</div>

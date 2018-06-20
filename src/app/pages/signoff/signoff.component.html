@@ -1,0 +1,279 @@
+<header class="header">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" id="drop_dwn_list" aria-labelledby="dropdownMenu">
+            <ol class="clearfix steps-list" id="qblist" *ngIf="type=='quickbooks' || type=='xero' || type=='sage'">
+                <li><span class="accounting-type"> {{ companyAccountingType }}</span> <span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span> login</li>
+                <li>Verify CoA matching</li>
+                <li>Reporting</li>
+                <li class="active">Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="upload_list" *ngIf="type=='upload'">
+                <li>Upload CSV files</li>
+                <li>Verify CoA matching</li>
+                <li>Reporting</li>
+                <li class="active">Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="qbdlist" *ngIf="type=='quickbook-desktop'">
+                <li>Sync app download</li>
+                <li>Verify CoA matching</li>
+                <li>Reporting</li>
+                <li class="active">Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="formlist" *ngIf="type=='form-entry'">
+                <li>Fill Out Form</li>
+                <li>Reporting</li>
+                <li class="active">Final Sign Off</li>
+            </ol>
+        </div>
+    </div>
+    <div class="expresso-logo-block" id="logo_block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <!--
+    <div class="fixed-dropdown-block navbar-right">
+        <div class="dropdown">
+            <a (click)="saveExit()">Save and Exit</a>
+            <a id="dLabel" role="button" data-toggle="dropdown" class="">
+                Progress <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li><a (click)="saveExit()">Save and Exit</a></li>
+            </ul>
+        </div>
+    </div>-->
+    <contact-us [showContact]="showContact"></contact-us>
+
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+                <div class="steps-block">
+            <ol class="clearfix steps-list" id="qbside" *ngIf="type=='quickbooks' || type=='xero' || type=='sage'">
+              <li><span class="accounting-type"> {{ companyAccountingType }}</span><span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span> login</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li>Reporting</li>
+                <li class="active">Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="upload" *ngIf="type=='upload'">
+                <li>Upload CSV files</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li>Reporting</li>
+                <li class="active">Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="qbd" *ngIf="type=='quickbook-desktop'">
+                <li>Sync app download</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li>Reporting</li>
+                <li class="active">Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="entry" *ngIf="type=='form-entry'">
+                <li>Fill Out Form</li>
+                <li>Reporting</li>
+                <li class="active">Final Sign Off</li>
+            </ol>
+        </div>
+        <login-info></login-info>
+        <div class="reset-btn signoff-save-and-exit" *ngIf="editEnabled">
+          <a (click)="resetReports()" id="edit_reports_btn">Edit Mapping</a>
+        </div>
+        <div class="signoff-logout-btn signoff-save-and-exit" *ngIf="editEnabled">
+            <a (click)="saveExit()" id="save_exit_btn">Save & Exit</a>
+        </div>
+        <div class="logout-btn save-and-exit" *ngIf="!editEnabled">
+          <a (click)="saveExit()" id="save_exit_btn">Save & Exit</a>
+        </div>
+
+    </div>
+</div>
+<div class="clearfix page-container">
+    <h1 class="page-title" id="page_title">Final Sign Off</h1>
+    <p class="page-desc" id="page_desc">Please look through the following and provide final signoff.</p>
+    <div class="statement-table-container">
+        <div class="statement-table-block balance">
+            <p class="statement-table-title" id="bal_title">Balance Sheet - {{date | date:'MMM y'}}</p>
+            <div class="table-responsive">
+                <!-- todo: get rid of this inline style. .table class appears to be loaded twice, but can't find second declaration -->
+                <table style="width: 0px" class="table" id="bal_table_1">
+                    <tr *ngFor="let balance of balance_sheet_ass;let i=index" [ngClass]="{highlight: balance.fse_tag.is_total_row}">
+                        <td [attr.id]="'ass_desc_'+i">{{balance.fse_tag.description}}</td>
+                        <!-- see comment in dashboard-compoment as to why this is USD, in short dont change it to CAD. -->
+                        <td  [attr.id]="'ass_is_total_'+i" *ngIf="balance.fse_tag.is_total_row">{{balance.value | currency:'USD':true:'1.0-0'}}</td>
+                        <td [attr.id]="'ass_bal_val_'+i" *ngIf="!balance.fse_tag.is_total_row">{{balance.value | number:'1.0-0'}}</td>
+                    </tr>
+                </table>
+                <table style="width: 0px" class="table" id="liab_table">
+                    <tr *ngFor="let balance of balance_sheet_liab;let i=index" [ngClass]="{highlight: balance.fse_tag.is_total_row}">
+                        <td [attr.id]="'liab_desc_'+i">{{balance.fse_tag.description}}</td>
+                        <td [attr.id]="'liab_is_total_'+i"  *ngIf="balance.fse_tag.is_total_row">{{balance.value | currency:'USD':true:'1.0-0'}}</td>
+                        <td [attr.id]="'liab_bal_val_'+i" *ngIf="!balance.fse_tag.is_total_row">{{balance.value | number:'1.0-0'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="table_spacer"></div>
+        <div class="statement-table-block income">
+            <p class="statement-table-title" id="income_date">Income Statement - {{date | date:'MMM y'}}</p>
+            <div class="table-responsive">
+                <table style="width: 0px" class="table" id="income_table">
+                    <tr *ngFor="let income of income_statement;let i = index" [ngClass]="{highlight: income.fse_tag.is_total_row}">
+                        <td [attr.id]="'income_desc_'+i">{{income.fse_tag.description}}</td>
+                        <td [attr.id]="'income_is_total_'+i" *ngIf="income.fse_tag.is_total_row">{{income.value | currency:'USD':true:'1.0-0'}}</td>
+                        <td [attr.id]="'income_bal_val_'+i" *ngIf="!income.fse_tag.is_total_row">{{income.value | togglesign:negative_collection:income.fse_tag.name | number:'1.0-0'}}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="table_spacer"></div>
+        <div class="statement-table-block">
+            <p class="statement-table-title">Questionnaire</p>
+            <div class="table" *ngFor="let question of questions;let i=index" id="quest_block">
+                <div class="form-field" *ngIf="question.answer_data_type=='boolean'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                            </div>
+                            <div class="radio-container">
+                                <div class="radio-inline">
+                                    <label>
+                                        <input disabled type="radio" id="{{question.short_tag}}_Y" class="radio" name="gaap{{question.id}}" value={{question.question_choices[0]}} [(ngModel)]="question.answer.answer">
+                                        <div class="outer-border">{{question.question_choices[0]}}</div>
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input disabled type="radio" id="{{question.short_tag}}_N" class="radio" name="gaap{{question.id}}" value={{question.question_choices[1]}} [(ngModel)]="question.answer.answer">
+                                        <div class="outer-border">{{question.question_choices[1]}}</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='integer'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                            </div>
+                            <input readonly class="form-control time-input-block" type="number" [attr.id]="'ans_'+i" name="value{{question.id}}" value="" [(ngModel)]="question.answer.answer">
+                        </div>
+                    </div>
+                </div>
+              <div class="form-field" *ngIf="question.answer_data_type=='decimal'">
+                <div class="row">
+                  <div class=" col-md-8">
+                    <div class="label-price-block">
+                      <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                    </div>
+                    <input readonly class="form-control time-input-block" type="number" step="any" [attr.id]="'ans_'+i" name="value{{question.id}}" value="" [(ngModel)]="question.answer.answer">
+                  </div>
+                </div>
+              </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='varchar(127)' || question.answer_data_type=='varchar(120)' || question.answer_data_type=='varchar(64)' ">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                            </div>
+                            <input readonly class="form-control time-input-block" type="text" [attr.id]="'ans_'+i" name="text{{question.id}}" value="" [(ngModel)]="question.answer.answer">
+                        </div>
+                    </div>
+                </div>
+                <div id="{{question.short_tag}}_text" class="form-field" *ngIf="(question.answer_data_type=='varchar(511)' || question.answer_data_type=='varchar(255)') && show[i]">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                            </div>
+                            <textarea readonly class="form-control time-input-block" type="text" [attr.id]="'ans_'+i" name="text{{question.id}}" value="" rows='3' [(ngModel)]="question.answer.answer"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='date'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                                <input readonly disabled type="text" [attr.id]="'ans_'+i" [(ngModel)]="question.answer.answer" class="form-control date" bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig">
+                                <!-- <date-picker [(ngModel)]="question.answer.answer"  name="date{{question.id}}" class="angular-datepicker"></date-picker>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='enum'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                            </div>
+                            <select readonly disabled class="form-control time-input-block" [attr.id]="'ans_'+i" [(ngModel)]="question.answer.answer" name="select{{question.id}}">
+                                <option *ngFor="let option of question.enumvalues" value="{{option}}"> {{option}}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="table_spacer"></div>
+        <!-- inline style. remove. no time to figure out what's wrong with spacing. #todo -->
+        <div style="clear: both; margin-top: 24px;" class="statement-table-block">
+            <p class="statement-table-title" id="signoff_txt">Sign off</p>
+            <form style="width: 490px" class="signoff-form" action="csv-upload.html" (ngSubmit)="signOff()" id="sign_off_form" (change)="formChanged()">
+                <!-- inline style. remove. no time to figure out how to shrink width at the moment. #todo -->
+                <div class="form-field">
+                    <div class="label-price-block">
+                        <label  id="name_txt">Name of person certifying statements</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="time-input-block">
+                                <input class="form-control" type="text" name="signoff_by_name" value="" id="name" placeholder="Enter your Full Name" [(ngModel)]="signoff_by.signoff_by_name">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="label-price-block">
+                        <label id="position_txt">Position of person certifying statements</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="time-input-block">
+                                <input class="form-control" type="text" name="signoff_by_title" id="position" value="" placeholder="Enter your Title" [(ngModel)]="signoff_by.signoff_by_title">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field">
+                    <div class="label-price-block">
+                        <label id="date_txt">Date of certification</label>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="time-input-block">
+                                <input class="form-control" type="text" name="signoff_date" value="{{today}}" id="date" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="submit-btn-block">
+                    <div class="input-group col-xs-12 col-md-8">
+                      <button id="back_action" type="button" class="btn hollow-btn submit-back-btn" (click)="goBack()">Go Back</button>
+                        <button id="submit_coa_btn" type="submit" class="btn hollow-btn submit-coa-btn" (ngClick)="signOff()">Sign Off</button>
+                        <button id="download_pdf_btn" type="button" class="btn hollow-btn submit-coa-btn" (click)="downloadpdf()">Download PDF</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

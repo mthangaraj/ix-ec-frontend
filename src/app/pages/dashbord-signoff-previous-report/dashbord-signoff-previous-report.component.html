@@ -1,0 +1,206 @@
+<header class="header">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown" >
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" id="drop_dwn_list" aria-labelledby="dropdownMenu">
+            <div class="reports-actions-block">
+                <div class="next-report-date-block">
+                    <p class="title" id="next_reporting_text">Next Reporting Date:</p>
+                    <p class="date" id="next_reporting_period">{{next_reporting_peroid | date:'MMMM d'}}</p>
+                </div>
+                <a id="prev-report-btn" [routerLink]="['/dashboard-prev-report']" class="btn prev-report-btn active">Previous Reports</a>
+                <a id="review_btn" [routerLink]="['/dashboard']" class="btn financial-review-btn">Financial Overview</a>
+                <a id="logout_btn" class="logout-btn" (click)="logOut()">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="expresso-logo-block" id="logo_block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <contact-us [showContact]="showContact"></contact-us>
+
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+        <div class="reports-actions-block">
+            <!-- Check if Reporting is Due  -->
+            <div *ngIf="!next_reporting_due && !reporting_in_progress" class="next-report-date-block">
+                <p class="title" id="nxt_rprt_text">Next Reporting Date:</p>
+                <p class="date" id="nxt_rprt_date">{{next_reporting_peroid | date:'MMMM d, yyyy'}}</p>
+            </div>
+            <div *ngIf="next_reporting_due" class="report-due-block">
+                <p id="report_due">Report due for
+                    <br> {{next_reporting_peroid | date:'MMMM d, yyyy'}}</p>
+                <a id='start_reporting' (click)="startMonthlyReporting()" class="btn start-reporting-btn">Start Reporting</a>
+            </div>
+            <div *ngIf="reporting_in_progress" class="report-due-block">
+                <p id="curr_report">Report in progress for
+                    <br> {{current_reporting_period | date:'MMMM d, yyyy'}}</p>
+                <a id='continue_reporting' (click)="continueMonthlyReporting()" class="btn start-reporting-btn">Continue Reporting</a>
+            </div>
+            <!-- removed active class because on the previous report detail view you need to get back to Previous Reports list #brad -->
+            <a id="previous_reports_btn" [routerLink]="['/dashboard-prev-report']" class="btn prev-report-btn">Previous Reports</a>
+            <a id="overview_btn" [routerLink]="['/dashboard']" class="btn financial-review-btn">Financial Overview</a>
+        </div>
+        <login-info></login-info>
+        <div class="logout-btn save-and-exit">
+            <a id="save_exit_btn" (click)="logOut()">Logout</a>
+        </div>
+    </div>
+</div>
+<div class="clearfix page-container">
+    <div class="statement-table-container">
+    <div *ngIf="show_in_progress_msg" class="vert-center">
+        <div class="prev-report-header">
+            <div class="input-group col-xs-12 col-md-8">
+                <p class="page-title" id="curr_month">{{currentMonth}} Report Detail</p>
+            </div>
+        </div>
+        <div>
+            <p class="page-title" id="page_title">Reporting is In Progress.</p>
+            <p id="page_desc">Details will be available when reporting is complete.</p>
+        </div>
+    </div>
+
+    <div *ngIf="!show_in_progress_msg" class="vert-center">
+        <div class="prev-report-header">
+            <div class="input-group col-xs-12 col-md-8">
+                <p class="page-title" id="current_month">{{currentMonth}} Report Detail</p>
+            </div>
+        </div>
+
+        <div style="padding-top: 100px;" class="statement-table-container">
+            <div class="statement-table-block balance">
+                <p class="statement-table-title" id="statement_table_title">Balance Sheet</p>
+                <div class="table-responsive">
+                    <table style="width: 0px" class="table" id="asset_table">
+                        <tr *ngFor="let balance of balance_sheet_ass;let i=index" [ngClass]="{highlight: balance.fse_tag.is_total_row}">
+                            <td [attr.id]="'ass_desc_'+i">{{balance.fse_tag.description}}</td>
+                            <!-- see comment in dashboard-compoment as to why this is USD, in short dont change it to CAD .-->
+                            <td [attr.id]="'ass_is_total_'+i" *ngIf="balance.fse_tag.is_total_row">{{balance.value | currency:'USD':true:'1.0-0'}}</td>
+                            <td [attr.id]="'ass_bal_val_'+i" *ngIf="!balance.fse_tag.is_total_row">{{balance.value | number:'1.0-0'}}</td>
+                        </tr>
+                    </table>
+                    <table style="width: 0px" class="table" id="liab_table">
+                        <tr *ngFor="let balance of balance_sheet_liab;let i=index" [ngClass]="{highlight: balance.fse_tag.is_total_row}">
+                            <td [attr.id]="'liab_desc_'+i">{{balance.fse_tag.description}}</td>
+                            <td [attr.id]="'liab_is_total_'+i" *ngIf="balance.fse_tag.is_total_row">{{balance.value | currency:'USD':true:'1.0-0'}}</td>
+                            <td [attr.id]="'liab_bal_val_'+i" *ngIf="!balance.fse_tag.is_total_row">{{balance.value | number:'1.0-0'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="statement-table-block income">
+                <p class="statement-table-title">Income Statement</p>
+                <div class="table-responsive">
+                    <table style="width: 0px" class="table" id="income_table">
+                        <tr *ngFor="let income of income_statement;let i=index" [ngClass]="{highlight: income.fse_tag.is_total_row}">
+                            <td [attr.id]="'income_desc_'+i">{{income.fse_tag.description}}</td>
+                            <td [attr.id]="'income_is_total_'+i" *ngIf="income.fse_tag.is_total_row">{{income.value | currency:'USD':true:'1.0-0'}}</td>
+                            <td [attr.id]="'income_bal_val_'+i" *ngIf="!income.fse_tag.is_total_row">{{income.value | togglesign:negative_collection:income.fse_tag.name | number:'1.0-0'}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="statement-table-block income">
+                <p class="statement-table-title">Questionnaire</p>
+                <div *ngIf="questions.length == 0 " class="no-questions" id="no_questions">
+                    No questionnaire data is collected during setup.
+                </div>
+                <div class="table" *ngFor="let question of questions;let i=index">
+                    <div class="form-field" *ngIf="question.answer_data_type=='boolean'">
+                        <div class="row">
+                            <div class=" col-md-8">
+                                <div class="label-price-block">
+                                    <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                                </div>
+                                <div class="radio-container">
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input disabled type="radio" id="{{question.short_tag}}_Y" class="radio" name="gaap{{question.id}}" value={{question.question_choices[0]}} [(ngModel)]="question.answer.answer">
+                                            <div class="outer-border">{{question.question_choices[0]}}</div>
+                                        </label>
+                                    </div>
+                                    <div class="radio-inline">
+                                        <label>
+                                            <input disabled type="radio" id="{{question.short_tag}}_N" class="radio" name="gaap{{question.id}}" value={{question.question_choices[1]}} [(ngModel)]="question.answer.answer">
+                                            <div class="outer-border">{{question.question_choices[1]}}</div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-field" *ngIf="question.answer_data_type=='integer'">
+                        <div class="row">
+                            <div class=" col-md-8">
+                                <div class="label-price-block">
+                                    <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                                </div>
+                                <input readonly class="form-control time-input-block" type="number" [attr.id]="'ans_'+question.id" name="value{{question.id}}" value="" [(ngModel)]="question.answer.answer">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-field" *ngIf="question.answer_data_type=='varchar(127)'">
+                        <div class="row">
+                            <div class=" col-md-8">
+                                <div class="label-price-block">
+                                    <label [attr.id]="'quest_var_'+i">{{question.question_text}}</label>
+                                </div>
+                                <input readonly class="form-control time-input-block" type="text" [attr.id]="'ans_'+question.id" name="text{{question.id}}" value="" [(ngModel)]="question.answer.answer">
+                            </div>
+                        </div>
+                    </div>
+                    <div id="{{question.short_tag}}_text" class="form-field" *ngIf="(question.answer_data_type=='varchar(511)' || question.answer_data_type=='varchar(255)') && show[i]">
+                        <div class="row">
+                            <div class=" col-md-8">
+                                <div class="label-price-block">
+                                    <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                                </div>
+                                <textarea readonly class="form-control time-input-block" type="text" [attr.id]="'ans_'+question.id" name="text{{question.id}}" value="" rows='3' [(ngModel)]="question.answer.answer"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-field" *ngIf="question.answer_data_type=='date'">
+                        <div class="row">
+                            <div class=" col-md-8">
+                                <div class="label-price-block">
+                                    <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                                    <input readonly disabled  [attr.id]="'ans_'+question.id" type="text" [(ngModel)]="question.answer.answer" class="form-control date" bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig">
+                                    <!-- <date-picker [(ngModel)]="question.answer.answer"  name="date{{question.id}}" class="angular-datepicker"></date-picker>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-field" *ngIf="question.answer_data_type=='enum'">
+                        <div class="row">
+                            <div class=" col-md-8">
+                                <div class="label-price-block">
+                                    <label [attr.id]="'quest_'+i">{{question.question_text}}</label>
+                                </div>
+                                <select readonly disabled class="form-control time-input-block" [(ngModel)]="question.answer.answer" [attr.id]="'ans_'+question.id" name="select{{question.id}}">
+                                    <option *ngFor="let option of question.enumvalues" value="{{option}}"> {{option}}</option>
+                                </select>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-btn-block">
+                <div class="input-group col-xs-12 col-md-8">
+                    <button id="back_action" type="button" class="btn hollow-btn submit-back-btn" (click)="goBack()">Go Back</button>
+                    <button [routerLink]="['/dashboard-signoff-prev-report', dateParam, 'edit']" id="submit_coa_btn" type="submit" class="btn hollow-btn submit-coa-btn">Edit Report</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

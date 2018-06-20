@@ -1,0 +1,64 @@
+<div class="vertical-container brand-bg">
+    <static-header></static-header>
+    <div class="vertical-center" *ngIf="enable_security_block">
+        <div class="security-block" >
+            <!--<img class="security-icon" src="./assets/img/intro-icon.svg" id="intro_icon">-->
+            <i class="fa fa-cogs security-icon"></i>
+            <div class="intro-title" id="intro_title">Account Security</div>
+            <div class="intro_message" id="intro_message">Two-factor authentication adds an extra layer of security to your account. In addition to your username and password, you’ll need to enter a code that Espresso sends via an app on your phone.</div>
+            <div class="intro_message" id="sub_message">Use any below application on your phone to get two-factor authentication codes when prompted.</div>
+            <div class="intro_message">
+            <ul type="disc">
+              <li><p>For Android, iOS, and Blackberry: <a class="intro_message forgetpass-text" target="_blank"  href="https://support.google.com/accounts/answer/1066447?hl=en">Google Authenticator</a> </p></li>
+              <li><p>For Android and iOS: <a class="intro_message forgetpass-text" target="_blank"  href="https://guide.duo.com/third-party-accounts">Duo Mobile</a></p></li>
+              <li><p>For Windows Phone: <a class="intro_message forgetpass-text" target="_blank"  href="https://www.microsoft.com/en-us/store/p/authenticator/9wzdncrfj3rj">Authenticator</a></p></li>
+            </ul>
+            </div>
+            <div>
+            <button id="account_security_enabled_btn" (click)="enable_two_factor_auth()" class="btn goto-db-btn">Setup Two-Factor Authentication</button>
+            <button id="account_security_skip_btn" *ngIf="!enforce_tfa_enabled" (click)="skip_2fa()" class="btn goto-db-btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <div class="two-factor-div" *ngIf="set_security_block" >
+      <p class="intro-title" id="set_security_title">Scan this barcode with your app</p>
+      <p class="intro_message" id="set_security_message">To start using a token generator, please use your smartphone to scan the QR code below. For example, use Google Authenticator.</p>
+      <div class="qrcode-block">
+        <ngx-qrcode [qrc-value]="security_code" [qrc-version]=5 [qrc-correction-level]="'L'"></ngx-qrcode>
+      </div>
+      <div class="code-block">
+      <p class="sub_heading">Enter the six-digit code from the application</p>
+        <p class="intro_message_width">After scanning the barcode image, the app will display a six-digit code that you can enter below.</p>
+        <form id="2fa_form" type="post" name="" class="2fa_form" #totpform="ngForm"  autocomplete="off">
+        <input name="code" type="text" required minlength="6" maxlength="6" class="input-qrcode" [(ngModel)]="secret_code"/>
+        <div class="set-security-btn-block">
+          <button id="set_security_next_btn" [disabled]="!totpform.form.valid" class="btn1 goto-db-btn1" (click)="code_verification()">Enable</button>
+          <button id="account_security_back_btn" *ngIf="!(enforce_tfa_enabled || is_tfa_setup_completed)" (click)="skip_2fa()" class="btn1 goto-db-btn2">Cancel</button>
+        </div>
+        </form>
+      </div>
+    </div>
+    <div class="two-factor-div" *ngIf="is_tfa_setup_completed && (is_tfa_enabled || enforce_tfa_enabled)" >
+    <div class="intro-title" id="security_title">Two-factor authentication</div>
+    <br>
+    <div class="intro_title">Authentication code:</div>
+    <form id="2fa_form1" type="post" name="" class="2fa_form"  #tfa_auth="ngForm" (ngSubmit)="code_verification()"  autocomplete="off">
+        <div>
+            <input name="code" type="text" required minlength="6" maxlength="6" class="input-qrcode-verify" [(ngModel)]="secret_code"/>
+        </div>
+        <div>&nbsp;</div>
+        <div align="center">
+            <button type="submit" class="btn1 verify-btn" [disabled]="!tfa_auth.form.valid">Verify</button>
+        </div>
+    </form>
+    <br>
+    <div class="intro_message">
+        <div class="note-icon-block"><i class="fa fa-mobile-phone phone-icon"></i></div>
+        <div class="note-message">Open the two-factor authentication app on your device to view your authentication code and verify your identity.</div>
+
+        <div>Problem Logging In? Please contact admin for more Information.</div>
+
+  </div>
+
+</div>
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

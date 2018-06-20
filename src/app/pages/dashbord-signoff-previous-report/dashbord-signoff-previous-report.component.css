@@ -1,0 +1,122 @@
+.dashboard-tab-content .statement-table-block {
+    overflow-x: auto;
+    white-space: nowrap;
+    margin: 0 -25px 30px 0;
+  }
+  
+  .dashboard-tab-content .statement-table-block::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+    height: 4px;
+  }
+  
+  .dashboard-tab-content .statement-table-block::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #005B8A;
+    box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+  }
+  
+  .dashboard-tab-content ul {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .dashboard-tab-content ul li {
+    color: #0085CA;
+    background-color: #F3F3F3;
+    padding: 8px;
+    line-height: 1.42857143;
+    vertical-align: top;
+    border-bottom: 1px solid #fff;
+    border-right: 1px solid #fff;
+  }
+  
+  .dashboard-tab-content ul li:nth-child(1) {
+    font-weight: 600;
+    background: #fff;
+    border-right: 1px solid #0085CA;
+    border-bottom: 1px solid #0085CA;
+  }
+  
+  .dashboard-tab-content ul .nameSize {
+    width: 300px;
+  }
+  
+  .dashboard-tab-content ul .backColor {
+    background-color: #005B8A !important;
+    color: #fff;
+    font-weight: 600;
+  }
+  
+  .dashboard-tab-content .liClass li:nth-child(n+2) {
+    background: #0085CA;
+    color: #fff;
+  }
+  
+  .dashboard-tab-content .tab-pane .statement-table-block .value {
+    text-align: right;
+  }
+
+  /*From Edit*/
+.entry-form .time-input-block {
+  border: 0;
+  text-align: right;
+}
+
+.result {
+  background: #fff !important;
+  color: #0085CA;
+  /*border: 1px solid #F3F3F3 !important*/
+}
+
+.entry-form .table tr:last-child td {
+  /*border: 0 !important;*/
+}
+
+.entry-form .table>tbody>tr>td {
+  border-top: #fff !important;
+  /*border-right: 1px solid #fff !important;*/
+}
+
+.entry-form .table th {
+  /*border-right: 1px solid #0085CA;*/
+}
+
+.total {
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.entry-form .table td {
+  vertical-align: middle;
+}
+
+.notetext{
+  font-size: 10px;
+}
+
+
+/*Setting Menu */
+.dashboad-side-menu{
+  position: fixed;
+  z-index: 999;
+  border: #fff solid 1px;
+  padding: 10px;
+  margin-left: 0%;
+  border-radius: 0px 20px 20px 0px;
+  top: 76%
+}
+
+.setting-icon{
+  font-size:30px;
+  color:#ffffff;
+}
+
+.table tr:first-child{
+  color: #fff;
+  width: 400px;
+  background-color: #0085CA;
+  min-width: 400px;
+}

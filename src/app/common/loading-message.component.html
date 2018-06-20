@@ -1,0 +1,22 @@
+<div class="animated-loader-sheen" *ngIf="showLoading">
+    <div class='loading_container'>
+        <div>
+            <div class="loading">
+              <table border="1" align="center">
+                  <tr height="100%">
+                      <td height="100%" width="100%" valign="middle" align="center">
+                        <!-- all the config is global in the app.module.ts imports section -->
+                        <ngx-loading [show]="showLoading" [config]="{backdropBackgroundColour: 'rgba(0,0,0,0)'}"></ngx-loading>
+                    </td>
+                </tr>
+              </table>
+            </div>
+            <div class="loading_message">
+              {{loadingMessage.message}}
+            </div>
+            <div class="loading_error_message" *ngIf="loadingMessage.error.length > 0">
+              [{{loadingMessage.error}}]
+            </div>
+        </div>
+    </div>
+</div>

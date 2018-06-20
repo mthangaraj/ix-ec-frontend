@@ -1,0 +1,47 @@
+  <div class="expresso-logo-block">
+      <img src="./assets/img/expresso-logo.png" class="white-logo">
+  </div>
+  <div class="fixed-dropdown-block navbar-right">
+      <div class="dropdown">
+          <a id="dLabel" role="button" data-toggle="dropdown" class="" data-target="#" href="javascript:void(0)">
+              Progress <span class="caret"></span>
+          </a>
+          <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+              <li><a (click)="saveExit()" id="save_exit_btn">Save & Exit</a></li>
+
+          </ul>
+      </div>
+  </div>
+  <div class="vertical-height steps-container hamburger-menu brand-bg">
+      <div class="vert-center">
+          <div class="steps-block">
+              <ol class="clearfix steps-list">
+                  <li class="active"><span class="accounting-type"> {{ companyAccountingType }}</span><span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span> Login</li>
+                  <li>Verify COA Matching</li>
+                  <li>Reporting</li>
+                  <li>Final Sign Off</li>
+              </ol>
+          </div>
+      </div>
+  </div>
+  <div class="vertical-height need-container brand-bg">
+      <div class="vert-center">
+          <div class="login-details-block">
+              <p class="title">What You'll Need</p>
+              <p class="description">Please make sure your login info ready and ensure that your account has permission to make changes.</p>
+              <p class="description">Once you log into Quickbooks online, we will upload Trial Balance and Chart of Accounts tables to our database.</p>
+          </div>
+      </div>
+  </div>
+  <div class="vertical-height login-container">
+      <div class="vert-center">
+          <div class="qb-login-block">
+              <p class="qb-login-title">Login to Quickbooks Online</p>
+              <form action="coa-matching.html" name="" class="qb-login-form">
+                  <input type="text" name="" class="input-control" placeholder="Username">
+                  <input type="password" name="" class="input-control" placeholder="Password">
+                  <button type="submit" class="btn qb-login-btn">Login</button>
+              </form>
+          </div>
+      </div>
+  </div>

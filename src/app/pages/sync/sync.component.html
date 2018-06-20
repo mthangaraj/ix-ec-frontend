@@ -1,0 +1,80 @@
+        <div class="vertical-container brand-bg" >
+            <static-header></static-header>
+
+            <div class="vert-center sync-center">
+                <div class="clearfix sync-block">
+                    <p class="sync-title" id="sync_title">How would you like to share your information with us?</p>
+                    <div class="task-box-container">
+                        <div class="task-box-block" *ngIf="online_enabled">
+                            <a (click)="sync(online_sync_account)" id="qbo" class="task-box-link">
+                                <div class="task-box">
+                                    <div class="task-header">
+                                        <div class="triangle-icon" id="qbo_triangle">
+                                            <img src="./assets/img/triangle-icon.svg">
+                                        </div>
+                                        <img src="./assets/img/{{account_log}}" class="task-icon" id="qbo_icon">
+                                        <p class="title" id="qbo_title">Sync with<span class="accounting-type"> {{ companyAccountingType }}</span> <span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span></p>
+                                    </div>
+                                    <div class="task-details">
+                                        <p class="title" id="qbo_det_title">5 minutes</p>
+                                        <p class="description"  id="qbo_det_desc">Please have your login ready and ensure you have permission to make changes to your account.</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="task-box-block" *ngIf="desktop_enabled">
+                            <a (click)="sync('QBD')" id="qbd" class="task-box-link">
+                                <div class="task-box">
+                                    <div class="task-header">
+                                        <div class="triangle-icon" id="qbd_triangle">
+                                            <img src="./assets/img/triangle-icon.svg">
+                                        </div>
+                                        <img src="./assets/img/{{account_log}}" class="task-icon"id="qbd_icon">
+                                        <p class="title" id="qbd_title">Sync with<span class="accounting-type"> {{ companyAccountingType }} Desktop</span></p>
+                                    </div>
+                                    <div class="task-details">
+                                        <p class="title" id="qbd_det_title">10 minutes</p>
+                                        <p class="description" id="qbd_det_desc">Please have your login ready and ensure you have permission to make changes to your account.</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="task-box-block" *ngIf="csv_enabled">
+                            <a (click)="sync('CSV')" id="csv" class="task-box-link">
+                                <div class="task-box">
+                                    <div class="task-header">
+                                        <div class="triangle-icon"id="csv_triangle">
+                                            <img src="./assets/img/triangle-icon.svg">
+                                        </div>
+                                        <img src="./assets/img/csv-icon.svg" class="task-icon"id="csv_icon">
+                                        <p class="title" id="csv_title">Upload<br><span> CSV Files</span></p>
+                                    </div>
+                                    <div class="task-details">
+                                        <p class="title" id="csv_det_title">15 minutes</p>
+                                        <p class="description" id="csv_det_desc">Please make sure your accounting software is capable of exporting CSV files.</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="task-box-block">
+                            <a (click)="sync('MANUAL')" id="manual" class="task-box-link">
+                                <div class="task-box">
+                                    <div class="task-header">
+                                        <div class="triangle-icon"id="manual_triangle">
+                                            <img src="./assets/img/triangle-icon.svg">
+                                        </div>
+                                        <img src="./assets/img/form-icon.svg" class="task-icon"id="manual_icon">
+                                        <p class="title" id="manual_title">Fill out a<br><span> Manual Form</span></p>
+                                    </div>
+                                    <div class="task-details">
+                                        <p class="title" id="manual_det_title">20 minutes</p>
+                                        <p class="description" id="manual_det_desc">Please have your accounting data ready for manual financial data entry.</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

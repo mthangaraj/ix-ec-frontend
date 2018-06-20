@@ -1,0 +1,484 @@
+<header class="header">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+            <ol class="clearfix steps-list">
+                <li class="active">Fill Out Form</li>
+                <li>Reporting</li>
+                <li>Final Sign Off</li>
+            </ol>
+        </div>
+    </div>
+    <div class="expresso-logo-block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <contact-us [showContact]="showContact"></contact-us>
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+        <div class="steps-block" id="order_list">
+            <ol class="clearfix steps-list">
+                <li class="active">Fill Out Form</li>
+                <li>Reporting</li>
+                <li>Final Sign Off</li>
+            </ol>
+        </div>
+        <login-info></login-info>
+        <div class="logout-btn save-and-exit">
+            <a (click)="saveExit()" id="save_exit_btn">Save & Exit</a>
+        </div>
+    </div>
+</div>
+<div class="clearfix page-container">
+    <h1 class="page-title">Form Entry</h1>
+    <p class="page-desc">Please answer each question below. Provide extra details when prompted. All questions are required.</p>
+    <form class="entry-form" (ngSubmit)="submitForm()" id="form_entry" (change)="formChanged()" autocomplete="off">
+        <div class="statement-table-container">
+            <div class="statement-table-block income">
+                <p class="statement-table-title" id="statement-table-title">Balance Sheet as of {{date}}</p>
+                <div class="table-responsive">
+                    <table class="table" id="bal_table_1">
+                        <tr>
+                            <th style="text-align: center" colspan="2" id="bal_acc_name">Account Name</th>
+                            <th style="text-align: center" id="amnt">Amount</th>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2"><span id="balance_cash_text">Cash</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="balance_cash" name="Cash" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.Cash"
+                                       (ngModelChange)="getTotalCurrentassets()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="balance_acc_rec_text">Accounts Receivables</span></td>
+                            <td>
+                               <input type="text" class="form-control time-input-block"
+                                       id="balance_acc_rec" name="Accounts Receivables" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.AccountReceivables"
+                                       (ngModelChange)="getTotalCurrentassets()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="balance_sred_rec_txt">Tax Credit Receivable</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="balance_sred_rec" name="SRED/ITC Receivable" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.SREDReceivable"
+                                       (ngModelChange)="getTotalCurrentassets()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="balance_other_curr_asset_txt">Other Current Assets</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="balance_other_curr_asset" name="Other Current Assets" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.OtherCurrentAssets"
+                                       (ngModelChange)="getTotalCurrentassets()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="bal_total_cur_asset_text">Total Current Assets</span></td>
+                            <td>
+                                <input class="form-control time-input-block result" currencyMask name="Total Current Assets"
+                                       id="bal_total_cur_asset" value="" [(ngModel)]="balancesheet.TotalCurrentAssets"  disabled>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table" id="bal_table_2">
+                        <tr>
+                            <td colspan="2"><span id="bal_pat_asset_text">Patents & Intangible Assets</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_pat_asset" name="Patents & Intangible Assets" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.PatentsAndIntangibleAssets"
+                                       (ngModelChange)="getTotalAssets()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_fixed_asset_text">Fixed Assets</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_fixed_asset" name="Fixed Assets" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.FixedAssets"
+                                       (ngModelChange)="getTotalAssets()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_other_asset_txt" >Other Assets</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_other_asset" name="Other Assets" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.OtherAssets"
+                                       (ngModelChange)="getTotalAssets()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="bal_total_asset_txt">Total Assets</span></td>
+                            <td><input class="form-control time-input-block result" currencyMask name="Total Assets" id="bal_total_asset"
+                                       value=""  [(ngModel)]="balancesheet.TotalAssets" (ngModelChange)="getTotalAssets()" disabled>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table" id="bal_table_3">
+                        <tr>
+                            <td colspan="2"><span id="bal_acc_liab_txt">Accounts Payable and Accrued Liabilities</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_acc_liab" name="Accounts Payable and Accrued Liabilities" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.AccountsPayableAndAccruedLiabilities"
+                                       (ngModelChange)="getTotalCurrentLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_bank_debt_txt">Bank Debt</span></td>
+                            <td>
+                                 <input type="text" class="form-control time-input-block"
+                                       id="bal_bank_debt" name="Bank Debt" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.BankDebt"
+                                       (ngModelChange)="getTotalCurrentLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_other_curr_liab_txt">Other Current Liabilities</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_other_curr_liab" name="Other Current Liabilities" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.OtherCurrentLiabilities"
+                                       (ngModelChange)="getTotalCurrentLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_defer_rev_txt">Deferred Revenue</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_defer_rev" name="Deferred Revenue" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.DeferredRevenue"
+                                       (ngModelChange)="getTotalCurrentLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="bal_total_curr_liab_txt">Total Current Liabilities</span></td>
+                            <td>
+                                <input class="form-control time-input-block result" currencyMask name="Total Current Liabilities"
+                                       id="bal_total_curr_liab" value=""  [(ngModel)]="balancesheet.TotalCurrentLiabilities" disabled>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table">
+                        <tr>
+                            <td colspan="2"><span id="bal_espresso_debtoutstanding_txt">Espresso Debt Outstanding</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_espresso_debtoutstanding" name="Espresso Debt Outstanding" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.EspressoDebtOutstanding"
+                                       (ngModelChange)="getTotalLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_senior_sec_debt_txt">Senior Secured Debt</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_senior_sec_debt" name="Senior Secured Debt" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.SeniorSecuredDebt"
+                                       (ngModelChange)="getTotalLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_sub_deb_txt">Subordinated Debt</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_sub_deb" name="Subordinated Debt" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.SubordinatedDebt"
+                                       (ngModelChange)="getTotalLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_share_loan_txt">Shareholder Loans</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_share_loan" name="Shareholder Loans" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.ShareholderLoans"
+                                       (ngModelChange)="getTotalLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="other_liab_txt">Other Liabilities</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="other_liab" name="Other Liabilities" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.OtherLiabilities"
+                                       (ngModelChange)="getTotalLiabilities()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="total_liab_txt">Total Liabilities</span></td>
+                            <td><input class="form-control time-input-block result" currencyMask name="Total Liabilities" id="total_liab" value="" [(ngModel)]="balancesheet.TotalLiabilities" disabled></td>
+                        </tr>
+                    </table>
+                    <table class="table" id="bal_table_4">
+                        <tr>
+                            <td colspan="2"><span id="bal_share_cap_txt">Share Capital and Contributed Capital</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_share_cap" name="Share Capital and Contributed Capital" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.ShareAndContributedCapital"
+                                       (ngModelChange)="getTotalEquity()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td colspan="2"><span id="bal_equity_portion_txt">Equity Portion of LT Debt</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_equity_portion" name="Equity Portion of LT Debt" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.EquityPositionOfLTDebt"
+                                       (ngModelChange)="getTotalEquity()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_minority_txt">Minority Equity Position</span></td>
+                            <td>
+                                 <input type="text" class="form-control time-input-block"
+                                       id="bal_minority" name="Minority Equity Position" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.MinorityEquityPosition"
+                                       (ngModelChange)="getTotalEquity()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="bal_loss_txt">Retained Earnings (Loss)</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="bal_loss" name="Retained Earnings (Loss)" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.RetainedEarningsLoss"
+                                       (ngModelChange)="getTotalEquity()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="net_income_txt">Net Income</span></td>
+                            <td>
+                                <input type="text" class="form-control time-input-block"
+                                       id="net_income" name="Net Income" value=""  maxlength="15"
+                                       [(ngModel)]="balancesheet.NetIncomeYTD"
+                                       (ngModelChange)="getTotalEquity()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="total_equity_txt">Total Equity</span></td>
+                            <td><input class="form-control time-input-block result" currencyMask name="Total Equity" value="" id="total_equity" [(ngModel)]="balancesheet.TotalEquity" disabled></td>
+                        </tr>
+                    </table>
+                    <table class="table">
+                        <tr class="total">
+                            <td colspan="2"><span id="total_le_txt">Total L&E</span></td>
+                            <td><input class="form-control time-input-block result" currencyMask name="Total L&E" value="" id="total_le"[(ngModel)]="balancesheet.TotalLiabilityAndEquity" disabled></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div class="statement-table-block balance">
+                <p class="statement-table-title" id="income_statement">Income Statement as of {{date}}</p>
+                <div class="table-responsive">
+                    <table class="table" id="income_table">
+                        <tr>
+                            <th style="text-align: center" colspan="2" id="income_acc_name">Account Name</th>
+                            <th style="text-align: center" id="income_amnt">Amount</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="rec_rev_txt">Recurring Revenues</span></td>
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="rec_rev" name="Recurring Revenues" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.RecurringRevenues"
+                                       (ngModelChange)="getTotalRevenue()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="non_rec_rev_txt">Non-Recurring Revenues</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="non_rec_rev" name="Non-Recurring Revenues" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.NonRecurringRevenues"
+                                       (ngModelChange)="getTotalRevenue()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="total_rev_txt">Total Revenues</span></td>
+                            <!--                              <td class="empty-cell"></td>-->
+                            <td><input class="form-control time-input-block result" currencyMask name="Total Revenues"
+                                       id="total_rev" value="" [(ngModel)]="incomestatement.TotalRevenue" disabled>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table">
+                        <tr>
+                            <td colspan="2"><span id="coast_goods_txt">Cost of Goods Sold</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="coast_goods" name="Cost of Goods Sold" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.CostOfGoodsSold"
+                                       (ngModelChange)="getGrossProfit()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="gross_profit_txt">Gross Profit</span></td>
+
+                            <td >
+                                <input class="form-control time-input-block result" currencyMask name="Gross Profit" value=""
+                                        id="gross_profit" [(ngModel)]="incomestatement.GrossProfit" disabled>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table">
+                        <tr>
+                            <td colspan="2"><span id="sales_market_txt">Sales and Marketing Expenses</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="sales_market" name="Sales and Marketing Expenses" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.SalesAndMarketingExpenses"
+                                       (ngModelChange)="getEbitda()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="income_rd_txt">R&D (Gross - excluding SR&ED)</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="income_rd" name="R&D (Gross - excluding SRED)" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.RDGrossMinusExcludingSRED"
+                                       (ngModelChange)="getEbitda()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="income_ga_txt">G&A</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="income_ga" name="G&A" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.GA"
+                                       (ngModelChange)="getEbitda()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+
+                        <tr class="total">
+                            <td colspan="2"><span id="income_ebitda_txt">EBITDA</span></td>
+
+                            <td >
+                                <input class="form-control time-input-block result" currencyMask name="EBITDA"
+                                        id="income_ebitda" value="" [(ngModel)]="incomestatement.Ebitda" disabled>
+                            </td>
+                        </tr>
+                    </table>
+                    <table class="table">
+                        <tr>
+                            <td colspan="2"><span id="income_da_txt">Depreciation & Amortization</span>
+                            <p class="notetext">Note : This number is usually negative.</p></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="income_da" name="Depreciation" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.DepreciationAndAmortization"
+                                       (ngModelChange)="getNetIncome()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="interest_income_txt">Interest Income (Expense)</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="interest_income" name="Interest Income (Expense)" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.InterestIncomeExpense"
+                                       (ngModelChange)="getNetIncome()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="irap_txt">IRAP/Grants Received</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="irap" name="IRAP/Grants Received" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.IRAPGrantsReceived"
+                                       (ngModelChange)="getNetIncome()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="sred_txt">SR&ED</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="sred" name="SRED" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.SREDAccrual"
+                                       (ngModelChange)="getNetIncome()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"><span id="other_income_txt">Other Income (Expenses)</span></td>
+
+                            <td >
+                                <input type="text" class="form-control time-input-block"
+                                       id="other_income" name="Other Income (Expenses)" value=""  maxlength="15"
+                                       [(ngModel)]="incomestatement.OtherIncomeExpenses"
+                                       (ngModelChange)="getNetIncome()"
+                                       NumberFormatter/>
+                            </td>
+                        </tr>
+                        <tr class="total">
+                            <td colspan="2"><span id="net_incomes_txt">Net Income</span></td>
+
+                            <td ><input class="form-control time-input-block result" currencyMask name="Net Incomes" value="" id="net_incomes"[(ngModel)]="incomestatement.NetIncome" disabled></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="submit-btn-block">
+          <button id="back_action" type="button" class="btn hollow-btn submit-back-btn" (click)="goBack()" [disabled]="account_status === 'ACCOUNTING_TYPE_CHOSEN'">Go Back</button>
+            <button class="btn hollow-btn submit-coa-btn" id="submit_btn" type="submit" (ngClick)="submitForm()">Submit Entry</button>
+        </div>
+    </form>
+</div>
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

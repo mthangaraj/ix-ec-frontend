@@ -1,0 +1,205 @@
+<header class="header">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" id="drop_dwn_list" aria-labelledby="dropdownMenu">
+            <div class="reports-actions-block">
+                <div class="next-report-date-block">
+                    <p class="title" id="nxt_report_text">Next Reporting Date:</p>
+                    <p class="date" id="nxt_report_date">{{next_reporting_peroid | date:'MMMM d'}}</p>
+                </div>
+                <a id='dashboard_prev_report' [routerLink]="['/dashboard-prev-report']" class="btn prev-report-btn">Previous Reports</a>
+                <a id='dashboard_financial_overview' [routerLink]="['/dashboard']" class="btn financial-review-btn active">Financial Overview</a>
+                <a id='logout' class="logout-btn" (click)="logOut()">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="expresso-logo-block" id="logo_block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <contact-us [showContact]="showContact"></contact-us>
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center" >
+        <div class="reports-actions-block">
+
+            <!-- Check if Reporting is Due  -->
+            <div *ngIf="!next_reporting_due && !reporting_in_progress" class="next-report-date-block">
+                <p class="title" id="title">Next Reporting Date:</p>
+                <p class="date" id="date">{{next_reporting_peroid | date:'MMMM, y'}}</p>
+            </div>
+            <div *ngIf="next_reporting_due" class="report-due-block">
+                <p id="report_due">Report due for
+                    <br> {{next_reporting_peroid | date:'MMMM, y'}}</p>
+                <a id='start_reporting' (click)="startMonthlyReporting()" class="btn start-reporting-btn">Start Reporting</a>
+            </div>
+            <div *ngIf="reporting_in_progress" class="report-due-block">
+                <p id="cur_report">Report in progress for
+                    <br> {{current_reporting_period | date:'MMMM, y'}}</p>
+                <a id='continue_reporting' (click)="continueMonthlyReporting()" class="btn start-reporting-btn">Continue Reporting</a>
+            </div>
+            <a id='dashboard_prev_report_1' [routerLink]="['/dashboard-prev-report']" class="btn prev-report-btn">Previous Reports</a>
+            <a id='dashboard_financial_overview_1' [routerLink]="['/dashboard']" class="btn financial-review-btn active">Financial Overview</a>
+        </div>
+      <br><br>
+        <login-info></login-info>
+        <div class="logout-btn save-and-exit">
+            <a id='save_exit_btn' (click)="logOut()">Logout</a>
+        </div>
+    </div>
+</div>
+<div class="clearfix page-container">
+    <h1 class="page-title" id="page_title">Financial Overview</h1>
+    <div class="dashboard-tabs-block">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs coa-sheet-tabs" role="tablist" id="coaTabs">
+            <li role="presentation" class="active">
+                <div class="tab-separator">
+                    <span></span>
+                </div>
+                <a id='show_balance_sheet' href="#balance-sheet" aria-controls="balance-sheet" role="tab" data-toggle="tab">
+                    <span>1</span>
+                    Balance Sheet
+                </a>
+            </li>
+            <li role="presentation">
+                <div class="tab-separator">
+                    <span></span>
+                </div>
+                <a id='show_income_statement' href="#income-statement" aria-controls="income-statement" role="tab" data-toggle="tab">
+                    <span>2</span>
+                    Income Statement
+                </a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content dashboard-tab-content">
+            <div role="tabpanel" class="tab-pane active" id="balance-sheet">
+                <div class="statement-table-block income">
+                    <ul class='liClass'>
+                        <li class="nameSize" id="assets">ASSETS</li>
+                        <li id="cash">Cash</li>
+                        <li id="acc_rec">Accounts Receivables</li>
+                        <li id="tax_credit">Tax Credit Receivable</li>
+                        <li id="other_curr">Other Current Assets</li>
+                        <li class="backColor" id="total_curr_assets">Total Current Assets</li>
+                        <li id="pat_int_assets">Patents & Intangible Assets</li>
+                        <li id="fixed_assets">Fixed Assets</li>
+                        <li id="other_assets">Other Assets</li>
+                        <li class="backColor" id="total_assets">Total Assets</li>
+                    </ul>
+                    <ul *ngFor="let fields of balance_sheet | groupBy:'period_ending';let i = index;" class="value">
+                        <li [attr.id]="'asset_'+i">{{fields.key | date:'MMM y'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'asset_cash':fields.key" [attr.id]="'asset_cash_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'asset_ar':fields.key" [attr.id]="'asset_ar_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'asset_itc':fields.key;" [attr.id]="'asset_itc_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <!--
+                        The angular currency pipe assumes it is in the United States,
+                        meaning: If you set the params to CAD your numbers will be displayed as CA$999.99, instead of just $999.99,
+                        so we use USD to avoid the CA$.
+                        -->
+                        <li *ngFor="let data of balance_sheet | Search:'asset_other_cur':fields.key;" [attr.id]="'asset_other_cur_'+i"> {{data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of balance_sheet | Search:'asset_tot_cur':fields.key;" [attr.id]="'asset_tot_cur_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'asset_intangible':fields.key;" [attr.id]="'asset_intangible_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'asset_fixed':fields.key;" [attr.id]="'asset_fixed_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'asset_other_lt':fields.key;" [attr.id]="'asset_other_lt_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of balance_sheet | Search:'asset_total':fields.key;" [attr.id]="'asset_total_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                    </ul>
+                </div>
+                <div class="statement-table-block income">
+                    <ul class='liClass'>
+                        <li class="nameSize"  id="liab">LIABILITIES</li>
+                        <li id="acc_payable">Accounts Payable and Accrued Liabilities</li>
+                        <li id="bank_debt">Bank Debt</li>
+                        <li id="other_curr_liab">Other Current Liabilities</li>
+                        <li id="defer_rev">Deferred Revenue</li>
+                        <li class="backColor" id="total_curr_liab">Total Current Liabilities</li>
+                        <li id="espresso_debt">Espresso Debt Outstanding</li>
+                        <li id="senior_debt">Senior Secured Debt (to Espresso)</li>
+                        <li id="sub_debt">Subordinated Debt (to Espresso)</li>
+                        <li id="share_loan">Shareholder Loans</li>
+                        <li id="other_liab">Other Liabilities</li>
+                        <li class="backColor" id="total_liab">Total Liabilities</li>
+                        <li id="share_cap">Share Capital and Contributed Capital</li>
+                        <li id="equity_portion">Equity Portion of LT Debt</li>
+                        <li id="minority_portion">Minority Equity Position</li>
+                        <li id="ret_earn">Retained Earnings (Loss)</li>
+                        <li id="net_income_ytd">Net Income Year to Date</li>
+                        <li class="backColor" id="total_equity">Total Equity</li>
+                        <li class="backColor" id="total_le">Total L&E</li>
+                    </ul>
+                    <ul *ngFor="let fields of balance_sheet | groupBy:'period_ending'; let i = index" class="value">
+                        <li [attr.id]="'liab_'+i">{{fields.key  | date:'MMM y'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_ap':fields.key;" [attr.id]="'liab_ap_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_bank_debt':fields.key;" [attr.id]="'liab_bank_debt_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_other_cur':fields.key;" [attr.id]="'liab_other_cur_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_deferred_rev':fields.key;" [attr.id]="'liab_deferred_rev_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of balance_sheet | Search:'liab_tot_cur':fields.key;" [attr.id]="'liab_tot_cur_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_espresso':fields.key;" [attr.id]="'liab_espresso_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_senior':fields.key;" [attr.id]="'liab_senior_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_subordinate':fields.key;" [attr.id]="'liab_subordinate_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_shareholder_loans':fields.key;" [attr.id]="'liab_shareholder_loans_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'liab_other_lt':fields.key;" [attr.id]="'liab_other_lt_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of balance_sheet | Search:'liab_total':fields.key;" [attr.id]="'liab_total_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'equity_share_capital':fields.key;" [attr.id]="'equity_share_capital_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'equity_liab_portion':fields.key;" [attr.id]="'equity_liab_portion_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'equity_minority_position':fields.key;" [attr.id]="'equity_minority_position_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'equity_retained_earnings':fields.key;" [attr.id]="'equity_retained_earnings_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'net_income_ytd':fields.key;" [attr.id]="'net_income_ytd_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of balance_sheet | Search:'equity_ytd_income':fields.key;" [attr.id]="'net_income_ytd_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of balance_sheet | Search:'equity_total':fields.key;" [attr.id]="'equity_total_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of balance_sheet | Search:'equity_liab_total':fields.key;" [attr.id]="'equity_liab_total_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div role="tabpanel" class="tab-pane" id="income-statement">
+                <div class="statement-table-block income">
+                    <ul class='liClass'>
+                        <li class="nameSize">&nbsp;</li>
+                        <li  id="rec_rev">Recurring Revenues</li>
+                        <li id="non_rec_rev">Non-Recurring Revenues</li>
+                        <li class="backColor" id="total_rev">Total Revenues</li>
+                        <li id="cost_goods">Cost of Goods Sold</li>
+                        <li class="backColor" id="gross_profit">Gross Profit</li>
+                        <li id="sales_market">Sales and Marketing Expenses</li>
+                        <li  id="rd">R&D (Gross - excluding SR&ED)</li>
+                        <li id="ga">G&A</li>
+                        <li class="backColor" id="ebitda">EBITDA</li>
+                        <li id="da">Depreciation & Amortization</li>
+                        <li id="interest">Interest Income (Expense)</li>
+                        <li id="irap">IRAP/Grants Received</li>
+                        <li id="sred">SR&ED</li>
+                        <li id="other_income">Other Income (Expenses)</li>
+                        <li class="backColor" id="net_income">Net Income</li>
+                    </ul>
+                    <ul *ngFor="let fields of income_statement | groupBy:'period_ending'; let i = index"  class="value">
+                        <li [attr.id]="'income_'+i">{{fields.key | date:'MMM y'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'rev_recurring':fields.key;" [attr.id]="'rev_recurring_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'rev_nonrecurring':fields.key;" [attr.id]="'rev_nonrecurring_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of income_statement | Search:'rev_total':fields.key;" [attr.id]="'rev_total_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_cogs':fields.key;" [attr.id]="'exp_cogs_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of income_statement | Search:'gross_profit':fields.key;" [attr.id]="'gross_profit_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_sales':fields.key;" [attr.id]="'exp_sales_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_randd':fields.key;" [attr.id]="'exp_randd_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_ganda':fields.key;" [attr.id]="'exp_ganda_'+i"> {{ data.value | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of income_statement | Search:'ebitda':fields.key;" [attr.id]="'ebitda_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_dep_amort':fields.key;" [attr.id]="'exp_dep_amort_'+i"> {{ data.value * -1 | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_interest':fields.key;" [attr.id]="'exp_interest_'+i"> {{ data.value * -1 | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_grants':fields.key;" [attr.id]="'exp_grants_'+i"> {{ data.value * -1 | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_sred':fields.key;" [attr.id]="'exp_sred_'+i"> {{ data.value * -1 | number:'1.0-0'}}</li>
+                        <li *ngFor="let data of income_statement | Search:'exp_other':fields.key;" [attr.id]="'exp_other_'+i"> {{ data.value * -1 | number:'1.0-0'}}</li>
+                        <li class="backColor" *ngFor="let data of income_statement | Search:'net_income':fields.key;" [attr.id]="'net_income_'+i"> {{data.value | currency:'USD':true:'1.0-0'}}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

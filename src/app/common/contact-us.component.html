@@ -1,0 +1,22 @@
+<div class="fixed-dropdown-block navbar-right dashboard-dropdown" id="ddnew">
+    <div class="dropdown" id="contact-us">
+        <a id="dLabel" role="button" data-toggle="dropdown" class="">
+            Contact Us <span class="caret"></span>
+        </a>
+        <ul *ngIf="ecpressoContactCount > 0" class="dropdown-menu" id="contact_list" role="menu" aria-labelledby="dropdownMenu">
+            <li *ngFor="let contact of espressoContacts;">
+                <p class="title">{{contact.title}}</p>
+                <p class="details">
+                    {{contact.first_name}} {{contact.last_name}}
+                    <br> {{contact.phone}}
+                    <br> {{contact.email}}
+                </p>
+            </li>
+        </ul>
+        <ul  *ngIf="ecpressoContactCount == 0" class="dropdown-menu" id="no_contact" role="menu" aria-labelledby="dropdownMenu">
+            <li>
+                <p class="details">{{espressoContactNoData}}</p>
+            </li>
+        </ul>
+    </div>
+</div>

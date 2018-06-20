@@ -1,0 +1,81 @@
+<header class="header admin">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown" >
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+            <div class="reports-actions-block">
+                <div class="next-report-date-block">
+                    <p class="title">Next Reporting Date:</p>
+                     <p class="date">{{next_reporting_peroid | date:'MMMM d'}}</p>
+                </div>
+                <a [routerLink]="['/admin-previous-report', company_id, company_name]" class="btn prev-report-btn active">Previous Reports</a>
+                <a [routerLink]="['/admin-company-dashboard',company_id,company_name]" class="btn financial-review-btn">Financial Overview</a>
+            </div>
+        </div>
+    </div>
+    <div class="expresso-logo-block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+</header>
+<div class="result-header">
+    <p>{{company_name}}</p>
+</div>
+<div class="vertical-height steps-container hamburger-menu brand-bg">
+    <div class="vert-center">
+        <div class="reports-actions-block">
+            <div class="next-report-date-block">
+                <p class="title">Next Reporting Date:</p>
+                 <p class="date">{{next_reporting_peroid | date:'MMMM d'}}</p>
+            </div>
+            <a [routerLink]="['/admin-previous-report', company_id, company_name]" class="btn prev-report-btn active">Previous Reports</a>
+            <a [routerLink]="['/admin-company-dashboard',company_id,company_name]" class="btn financial-review-btn">Financial Overview</a>
+        </div>
+    </div>
+</div>
+<div class="vertical-height reports-container admin-prev-report-container">
+    <div class="vert-center">
+        <p class="page-title">{{currentMonth}} Report Summary</p>
+        <div class="statement-table-container">
+            <div class="statement-table-block income">
+                <p class="statement-table-title">Income Statement ({{date}})</p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr *ngFor="let income of income_statement" [ngClass]="{highlight: income.fse_tag.description==='Total Revenues'}">
+                            <td>{{income.fse_tag.description}}</td>
+                            <td>{{income.value}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            <div class="statement-table-block balance">
+                <p class="statement-table-title">Balance Sheet ({{date}})</p>
+                <div class="table-responsive">
+                    <table class="table">
+                        <tr class="header">
+                            <th>Assets</th>
+                            <th></th>
+                        </tr>
+                        <tr *ngFor="let balance of balance_sheet" [ngClass]="{highlight: balance.fse_tag.description==='Total Assets'}" >
+                            <td *ngIf="balance.fse_tag.name.indexOf('asset') !== -1">{{balance.fse_tag.description}}</td>
+                            <td *ngIf="balance.fse_tag.name.indexOf('asset') !== -1">{{balance.value}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="animated-loader-sheen" *ngIf="showLoading">
+    <div class="loader">
+        <div class="dot-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+</div>

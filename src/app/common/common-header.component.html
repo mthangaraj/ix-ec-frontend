@@ -1,0 +1,24 @@
+<div class="expresso-logo-block fixed">
+  <img src="./assets/img/expresso-logo.png" class="white-logo show">
+</div>
+<div class="user-text" id="user_info" (click)="show()">
+  <span class="glyphicon glyphicon-user"></span> &nbsp; <span id="username" class="login-user-block">{{username}}</span>
+  <div *ngIf="user" id="cmpny_info" class="user-toggle">
+    <div class="sub-menu-items">
+      <span class="icon-style"><i class="fa fa-building"></i>&nbsp;</span>
+      <span id="company" class="sub-menu-style">{{companyName}}</span>
+    </div>
+    <div class="sub-menu-items" *ngIf="!is_security_page">
+      <span class="icon-style"><i class="fa fa-key"></i></span> <span id="change_password"  class="sub-menu-style" (click)="to_change_password()">Change Password</span>
+    </div>
+    <div class="sub-menu-items" *ngIf="!is_security_page && !is_tfa_enabled && !enforce_tfa_enabled">
+      <span class="icon-style"><i class="fa fa-lock"></i></span>
+      <span id="enable_tfa" (click)="to_enable_tfa()" class="sub-menu-style">Enable Two-Factor Auth</span></div>
+    <div class="sub-menu-items" *ngIf="!is_security_page && is_tfa_enabled && !enforce_tfa_enabled">
+      <span class="icon-style"><i class="fa fa-unlock"></i></span>
+      <span id="disable_tfa" (click)="to_disable_tfa()" class="sub-menu-style">Disable Two-Factor Auth</span></div>
+    <div class="sub-menu-items" (click)="logOut()">
+      <span class="icon-style"><i class="fa fa-sign-out"></i></span><span
+      id="save_exit_btn" class="sub-menu-style">Logout</span></div>
+  </div>
+</div>

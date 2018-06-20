@@ -1,0 +1,14 @@
+<div class="vertical-container brand-bg" id="logo_block">
+    <static-header></static-header>
+
+  <div class="vert-center intro-center">
+    <div class="intro-block">
+      <img class="intro-icon" src="./assets/img/intro-icon.svg" id="intro_icon">
+      <p class="intro-title" id="intro_title">First time? No worries!</p>
+      <p class="intro-subtitle" id="intro_subtitle">Our setup process is a piece of cake. You'll be done in just a few steps.</p>
+      <a id="start_btn" (click)="letStart()" class="btn intro-btn">Start Setting Up</a>
+    </div>
+  </div>
+
+
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

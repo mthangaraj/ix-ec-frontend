@@ -1,0 +1,6 @@
+input[class*="required-field"]:focus , textarea[class*="required-field"]:focus {
+  border: #DC6460 solid 1px !important;
+}
+.accounting-type{
+  text-transform: capitalize;
+}

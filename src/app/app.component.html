@@ -1,0 +1,5 @@
+<app-header></app-header>
+<app-scheduled *ngIf="maintenance" [maintenance_details]="maintenance_details"></app-scheduled>
+<router-outlet *ngIf="!maintenance"></router-outlet>
+<app-footer></app-footer>
+<ng2-toasty></ng2-toasty>

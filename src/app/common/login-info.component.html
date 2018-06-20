@@ -1,0 +1,39 @@
+<div class="login-info">
+    <p class="user" title="Logged in user." ><i class="glyphicon glyphicon-user" ></i><span class="login-info-span" id="username">{{username}}</span>
+    </p>
+    <p [ngClass]="css" title="Logged in user company."><i class="fa fa-building"></i><span  class="login-info-span" id="company">{{companyName}}</span></p>
+    <p *ngIf="setting_access" class="settings" id="settings"  (click)="openNav()" title="Click here for setting menu"><i class="fa fa-gear"></i><span  class="login-info-span">Settings</span></p>
+
+    <div class="side-slide-menu">
+                <!-- The overlay -->
+        <div id="side-slide" class="overlay">
+
+            <!-- Button to close the overlay navigation -->
+            <div class="menu-main-block">
+                <span class="menu-title" id="menu-title">Settings</span>
+                <span class="closebtn" title="Click to close menu" (click)="closeNav()">
+                    <i class="fa fa-times-circle close-icon"></i>
+                </span>
+            </div>
+
+            <!-- Overlay content -->
+            <div class="overlay-content" id="overlay-content">
+                <p class="sub-menu-items">
+                    <span class="icon-style"><i class="fa fa-key" (click)="to_change_password()"></i></span>
+                    <span class="sub-menu-style" id="change_password" (click)="to_change_password()">Change Password</span>
+                </p>
+                <p class="sub-menu-items" *ngIf="!is_security_page && !is_tfa_enabled && !enforce_tfa_enabled">
+                    <span class="icon-style"><i class="fa fa-lock" (click)="to_enable_tfa()"></i></span>
+                    <span class="sub-menu-style" id="enable_tfa" (click)="to_enable_tfa()">Enable Two-Factor Auth</span></p>
+                <p class="sub-menu-items" *ngIf="!is_security_page && is_tfa_enabled && !enforce_tfa_enabled">
+                    <span class="icon-style"><i class="fa fa-unlock" (click)="to_disable_tfa()"></i></span>
+                    <span class="sub-menu-style" id="disable_tfa" (click)="to_disable_tfa()">Disable Two-Factor Auth</span></p>
+
+                <p *ngIf="!is_security_page && is_tfa_enabled && enforce_tfa_enabled" class="sub-menu-items sub-menu-items-note"><b><i class="fa fa-bell"></i> Note:</b> <br>
+                    <span id="disable_notification">Admin can access for disable the Two-Factor Authendication.</span> </p>
+            </div>
+
+        </div>
+
+    </div>
+</div>

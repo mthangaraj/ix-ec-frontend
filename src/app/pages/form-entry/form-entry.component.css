@@ -1,0 +1,36 @@
+.entry-form .time-input-block {
+  border: 0;
+  text-align: right;
+}
+
+.result {
+  background: #fff !important;
+  color: #0085CA;
+  /*border: 1px solid #F3F3F3 !important*/
+}
+
+.entry-form .table tr:last-child td {
+  /*border: 0 !important;*/
+}
+
+.entry-form .table>tbody>tr>td {
+  border-top: #fff !important;
+  /*border-right: 1px solid #fff !important;*/
+}
+
+.entry-form .table th {
+  /*border-right: 1px solid #0085CA;*/
+}
+
+.total {
+  box-shadow: 1px 2px 4px rgba(0, 0, 0, .1);
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.entry-form .table td {
+  vertical-align: middle;
+}
+
+.notetext{
+  font-size: 10px;
+}

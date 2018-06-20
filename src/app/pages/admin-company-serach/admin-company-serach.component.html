@@ -1,0 +1,43 @@
+<header class="header">
+    <div class="expresso-logo-block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg">
+    <div class="vert-center">
+    </div>
+</div>
+<div class="vertical-height reports-container">
+    <div class="vert-center">
+        <p class="page-title">Borrower Search</p>
+        <div class="borrower-search-block">
+            <div class="search-input-field">
+                <span class="search-icon"></span>
+                <input type="text" class="form-control" name=""  [(ngModel)]="seachText" (ngModelChange)="getCompanyBySearchText(seachText)">
+            </div>
+            <ul class="search-results-list">
+                <!--                <li *ngFor="let company of companyList | Searchfilter:seachText ; let i = index;">-->
+                <li *ngFor="let company of companyList">
+                    <a class="result-link" (click)="goToAdminPreviousReport(company);">
+                        {{company.name}}
+                        <span class="result-right-arrow-icon"></span>
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <div class="no-results-block" *ngIf="companyList.length<=0">
+                Sorry, no results found.
+            </div>
+        </div>
+    </div>
+</div>
+<div class="animated-loader-sheen" *ngIf="showLoading">
+    <div class="loader">
+        <div class="dot-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+</div>

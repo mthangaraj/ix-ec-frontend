@@ -1,0 +1,277 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js" integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous"></script>
+<script>
+$(window).load(function() {
+	// Covenant Commentary
+	if($("#covenant_present_N").prop("checked")){
+		$("#covenant_commentary_text").show();
+	} else {
+		$("#covenant_commentary_text").hide();
+	}
+
+	$("#covenant_present_Y").click(function(){$("#covenant_commentary_text").hide();}
+	$("#covenant_present_N").click(function(){$("#covenant_commentary_text").show();}
+	////////////////////////
+
+	// CRA Obligations
+	if($("#cra_current_N").prop("checked")){
+		$("#cra_details_text").show();
+	} else {
+		$("#cra_details_text").hide();
+	}
+
+	$("#cra_current_Y").click(function(){$("#covenant_commentary_text").hide();}
+	$("#cra_current_N").click(function(){$("#covenant_commentary_text").show();}
+	////////////////////////
+
+	// Change in Officers
+	if($("#empl_senior_change_Y").prop("checked")){
+		$("#empl_senior_detail_text").show();
+	} else {
+		$("#empl_senior_detail_text").hide();
+	}
+
+	$("#empl_senior_change_N").click(function(){$("#covenant_commentary_text").hide();}
+	$("#empl_senior_change_Y").click(function(){$("#covenant_commentary_text").show();}
+	////////////////////////
+
+	// Data Compliant
+	if($("#financials_ifrs_Y").prop("checked")){
+		$("#general_commentary_d_text").show();
+	} else {
+		$("#general_commentary_d_text").hide();
+	}
+
+	$("#financials_ifrs_N").click(function(){$("#covenant_commentary_text").hide();}
+	$("#financials_ifrs_Y").click(function(){$("#covenant_commentary_text").show();}
+	////////////////////////
+
+	// Any Commentary
+	if($("#general_commentary_p_Y").prop("checked")){
+		$("#legal_commentary_text").show();
+	} else {
+		$("#legal_commentary_text").hide();
+	}
+
+	$("#general_commentary_p_N").click(function(){$("#covenant_commentary_text").hide();}
+	$("#general_commentary_p_Y").click(function(){$("#covenant_commentary_text").show();}
+	////////////////////////
+
+	// Currently Sued
+	if($("#legal_present_Y").prop("checked")){
+		$("#mac_commentary_text").show();
+	} else {
+		$("#mac_commentary_text").hide();
+	}
+
+	$("#legal_present_N").click(function(){$("#covenant_commentary_text").hide();}
+	$("#legal_present_Y").click(function(){$("#covenant_commentary_text").show();}
+	////////////////////////
+
+});
+
+</script>
+<header class="header">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown" >
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" id="drop_dwn_list" aria-labelledby="dropdownMenu">
+            <ol class="clearfix steps-list" id="qb_list" *ngIf="type=='quickbooks' || type=='xero' || type=='sage'">
+                <li><span class="accounting-type"> {{ companyAccountingType }}</span><span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span>login</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li class="active">Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="upload_list" *ngIf="type=='upload'">
+                <li>Upload CSV files</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li class="active">Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="qbd_list" *ngIf="type=='quickbook-desktop'">
+                <li>Sync app download</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li class="active">Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="form_list" *ngIf="type=='form-entry'">
+                <li>Fill Out Form</li>
+                <li class="active">Reporting</li>
+                <li>Final Sign Off</li>
+            </ol>
+        </div>
+    </div>
+    <div class="expresso-logo-block" id="logo_block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <!--<div class="fixed-dropdown-block navbar-right">
+        <div class="dropdown">
+            <a id="dLabel" role="button" data-toggle="dropdown" class="" >
+                Progress <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li><a (click)="saveExit()">Save & Exit</a></li>
+
+            </ul>
+        </div>
+    </div>-->
+    <contact-us [showContact]="showContact"></contact-us>
+
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+        <div class="steps-block">
+            <ol class="clearfix steps-list" id="qb_side" *ngIf="type=='quickbooks' || type=='xero' || type=='sage'">
+                <li><span class="accounting-type"> {{ companyAccountingType }}</span><span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span>login</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li class="active">Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="upload_side" *ngIf="type=='upload'">
+                <li>Upload CSV files</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li class="active">Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="qbd_side" *ngIf="type=='quickbook-desktop'">
+                <li>Sync app download</li>
+                <li>Verify Chart of Accounts matching</li>
+                <li class="active">Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="form_side" *ngIf="type=='form-entry'">
+                <li>Fill Out Form</li>
+                <li class="active">Reporting</li>
+                <li>Final Sign Off</li>
+            </ol>
+        </div>
+        <login-info></login-info>
+        <div class="logout-btn save-and-exit">
+            <a id="save_exit_btn" (click)="saveExit()">Save & Exit</a>
+        </div>
+    </div>
+</div>
+<div class="clearfix page-container">
+    <h1 class="page-title" id="page_title">Reporting</h1>
+    <p class="page-desc" id="page_desc">Please answer each question below. Provide extra details when prompted. All questions are required.</p>
+    <div class="coa-block">
+        <form class="reporting-form" id="reporting-form" action="sign-off.html" (ngSubmit)="submitReporting()" id="reporting_form" (change)="formChanged()">
+            <div *ngFor="let question of questions;let i=index">
+                <div class="form-field" *ngIf="question.answer_data_type=='boolean'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label class="question-label" [attr.id]="'question_'+question.id">{{question.question_text}}</label>
+                            </div>
+                            <div class="radio-container" [attr.id]="'container_'+question.id">
+                                <div class="radio-inline" >
+                                    <label>
+                                        <input type="radio" [attr.id]="'radio_'+question.id+'_yes'" class="radio" name="gaap{{question.id}}" value={{question.question_choices[0]}} [(ngModel)]="question.answer.answer" >
+                                        <div class="outer-border" [attr.id]="'answer_'+question.id+'_yes'" (click)="show_text_area(i,question.question_choices[0])">{{question.question_choices[0]}}</div>
+                                    </label>
+                                </div>
+                                <div class="radio-inline">
+                                    <label>
+                                        <input type="radio" [attr.id]="'radio_'+question.id+'_no'" class="radio" name="gaap{{question.id}}" value={{question.question_choices[1]}} [(ngModel)]="question.answer.answer">
+                                        <div class="outer-border" [attr.id]="'answer_'+question.id+'_no'" (click)="show_text_area(i,question.question_choices[1])">{{question.question_choices[1]}}</div>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='integer'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label class="question-label"  [attr.id]="'question_'+question.id">{{question.question_text}}</label>
+                            </div>
+                            <input type="text" class="form-control time-input-block"
+                                   [attr.id]="'answer_'+question.id" name="value{{question.id}}" value=""  maxlength="15"
+                                   [(ngModel)]="question.answer.answer"
+                                   NumbersOnly/>
+                        </div>
+                    </div>
+                </div>
+              <div class="form-field" *ngIf="question.answer_data_type=='decimal'">
+                <div class="row">
+                  <div class=" col-md-8">
+                    <div class="label-price-block">
+                      <label class="question-label"  [attr.id]="'question_'+question.id">{{question.question_text}}</label>
+                    </div>
+                    <input type="text" class="form-control time-input-block"
+                             step="any" [attr.id]="'answer_'+question.id" name="value{{question.id}}" value=""
+                             [(ngModel)]="question.answer.answer"
+                             NumbersOnly/>
+                  </div>
+                </div>
+              </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='varchar(127)' || question.answer_data_type=='varchar(120)' || question.answer_data_type=='varchar(64)' ">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label class="question-label"  [attr.id]="'question_'+question.id">{{question.question_text}}</label>
+                            </div>
+                            <input class="form-control time-input-block" type="text" [attr.id]="'answer_'+question.id" name="text{{question.id}}" value="" [(ngModel)]="question.answer.answer">
+                        </div>
+                    </div>
+                </div>
+                <div id="{{question.short_tag}}_text" class="form-field" *ngIf="(question.answer_data_type=='varchar(511)') && show[i]">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label [attr.id]="'child_question_'+question.id">{{question.question_text}}</label>
+                            </div>
+                            <textarea class="form-control time-input-block" type="text" [attr.id]="'child_answer_'+question.id" name="text{{question.id}}" value="" rows='3' [(ngModel)]="question.answer.answer"></textarea>
+                        </div>
+                    </div>
+                </div>
+              <div id="{{question.short_tag}}_text" class="form-field" *ngIf="(question.answer_data_type=='varchar(255)') && show[i]">
+                <div class="row">
+                  <div class=" col-md-8">
+                    <div class="label-price-block">
+                      <label [attr.id]="'child_question_'+question.id">{{question.question_text}}</label>
+                    </div>
+                    <textarea class="form-control time-input-block" type="text" [attr.id]="'child_answer_'+question.id" name="text{{question.id}}" value="" rows='3' [(ngModel)]="question.answer.answer"></textarea>
+                  </div>
+                </div>
+              </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='date'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label class="question-label"  [attr.id]="'question_'+question.id">{{question.question_text}}</label>
+                                <input type="text" [(ngModel)]="question.answer.answer" [attr.id]="'answer_'+question.id+'_date'" class="form-control" bsDatepicker #dp="bsDatepicker" [bsConfig]="bsConfig" [maxDate]="maxdate" [ngModelOptions]="{standalone: true}">
+                                <!-- <date-picker [(ngModel)]="question.answer.answer"  name="date{{question.id}}" class="angular-datepicker"></date-picker>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-field" *ngIf="question.answer_data_type=='enum'">
+                    <div class="row">
+                        <div class=" col-md-8">
+                            <div class="label-price-block">
+                                <label class="question-label"  [attr.id]="'question_'+question.id">{{question.question_text}}</label>
+                            </div>
+                            <select class="form-control time-input-block" [(ngModel)]="question.answer.answer" [attr.id]="'answer_'+question.id+'_dropdown'" name="select{{question.id}}">
+                                <option *ngFor="let option of question.enumvalues" value="{{option}}"> {{option}}</option>
+                            </select>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-btn-block">
+                <div class="input-group col-xs-12 col-md-8">
+                  <button id="back_action" type="button" class="btn hollow-btn submit-back-btn" (click)="goBack()">Go Back</button>
+                    <button id="submit_button" type="submit" class="btn hollow-btn submit-coa-btn" (ngClick)="submitReporting()">Submit</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

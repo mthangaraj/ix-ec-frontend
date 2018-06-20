@@ -1,0 +1,17 @@
+.ng-valid[required].ng-touched, .ng-valid.required.ng-touched  {
+    border: 2px solid #42A948; /* green */ /* change by BradJ - disabled color when entry is valid because only need to indicate if its not. see below.*/
+}
+  
+.ng-touched.ng-invalid:not(form)  {
+    border: 2px solid #a94442; /* red */
+}
+
+.error {
+    color: #fb0404;
+    background-color: #fff;
+    margin-bottom: 9px;
+    padding: 9px;
+    border-radius: 5px;
+    font-size: 13px;
+    border: 0.5px solid red;
+}

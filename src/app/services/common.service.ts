@@ -1,0 +1,132 @@
+import {Injectable} from "@angular/core";
+import {AppConstants, ErrorCodes, ErrorMessage, NavigateToScreen} from "../app.constants";
+import {Response} from "@angular/http";
+import {environment} from "../../environments/environment";
+import {Router} from '@angular/router';
+
+@Injectable()
+export class CommonService {
+    showLoading: boolean = true;
+    loadingMessage: any;
+    user;
+    session_timing;
+    constructor(private router: Router) {}
+
+    /*
+        Extract the data from api response.
+     */
+    extractData(res: Response) {
+        let body = res.json();
+        return body || {};
+    }
+
+    /*
+       Api response error handler
+    */
+    handleError(error: any): Promise<any> {
+        return Promise.reject(error.message || error);
+    }
+
+    /*
+       write console log for debug.
+    */
+
+    debuglog(message, result = null) {
+        if (AppConstants.debug) {
+            if (result == null) {
+                console.log("---| ",message)
+            } else {
+                console.log("---| ",message, result)
+            }
+        }
+    }
+
+    /*
+       Get Error Message
+    */
+    getErrorMessage(identifier){
+        if (identifier == ErrorCodes.INTERNAL_SERVER_ERROR){
+            return ErrorMessage.INTERNAL_SERVER_ERROR;
+        }else if(identifier == ErrorCodes.DATA_PARSHING_ISSUE){
+            return ErrorMessage.DATA_PARSHING_ISSUE;
+        }else if(identifier == ErrorCodes.MISSING_MONTHLY_REPORTING_PREVIOUS_PERIOD){
+            return ErrorMessage.MISSING_MONTHLY_REPORTING_PREVIOUS_PERIOD;
+        }else if(identifier == ErrorCodes.MISSING_META_CURRENT_PERIOD){
+            return ErrorMessage.MISSING_META_CURRENT_PERIOD;
+        }else if(identifier == ErrorCodes.INVALID_COA_CSV){
+            return ErrorMessage.INVALID_COA_CSV;
+        }else if(identifier == ErrorCodes.INVALID_TB_CSV){
+            return ErrorMessage.INVALID_TB_CSV;
+        }else if(identifier == ErrorCodes.INVALID_TB_DATE){
+            return ErrorMessage.INVALID_TB_DATE;
+        }else if(identifier == ErrorCodes.INVALID_FILE_FORMAT){
+            return ErrorMessage.INVALID_FILE_FORMAT;
+        }else if(identifier == ErrorCodes.OBJECT_RESOURCE){
+            return ErrorMessage.OBJECT_RESOURCE_NOT_FOUND;
+        }else if(identifier == ErrorCodes.FISCAL_YEAR_MISSING){
+          return ErrorMessage.FISCAL_YEAR_MISSING;
+        }else if(identifier == ErrorCodes.XERO_CONNECTION_ERROR){
+          return ErrorMessage.XERO_CONNECTION_ERROR;
+        }
+    }
+    getUserName() {
+        this.user = JSON.parse(localStorage.getItem('user'));
+        return this.user.username;
+    }
+    getUserId() {
+        let user = JSON.parse(localStorage.getItem('user'));
+        return user.id;
+    }
+
+    checkIsPasswordRestEnabled() {
+        let user = JSON.parse(localStorage.getItem('user'));
+        return user.is_password_reset;
+    }
+    getCompanyName() {
+        return this.user.company.name;
+    }
+    getAccountingType(){
+      return localStorage.getItem('accounting_type');
+    }
+
+    getSyncMethod(){
+        let user = JSON.parse(localStorage.getItem('user'));
+        return user.is_password_reset;
+    }
+
+    getSessionTiming(){
+        this.session_timing = localStorage.getItem('session_timing');
+        return this.session_timing * 60;
+    }
+    disableBrowseBackButton(){
+        history.pushState(null, null, location.href);
+        window.onpopstate = function(event) {
+            history.go(1);
+        };
+    }
+    sessionCheck(code) {
+        // bradj - temporarily disabling this because it is causing problems for QBD app's redirect. Once we figure out what's wrong, then we can re-enable.
+        /*if (code === ErrorCodes.SESSION_EXISTS) {
+            this.router.navigate(['/session_inactive']);
+        }else {
+            if (code === ErrorCodes.SESSION_EXPIRED) {
+                this.router.navigate(['/session_expired']);
+            } else {
+                return true;
+            }
+        }*/
+	return true;
+    }
+
+    checkAccountType(type){
+      return (type === AppConstants.QUICKBOOKS ||
+        type === AppConstants.XERO ||
+        type === AppConstants.SAGE) ? true : false;
+    }
+
+
+  checkAccountSyncType(type){
+    return (type === AppConstants.QBO_ACCOUNT_TYPE ||
+      type === AppConstants.XERO_ACCOUNT_TYPE ) ? true : false;
+  }
+}

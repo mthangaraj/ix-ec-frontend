@@ -1,0 +1,133 @@
+<header class="header">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button"  data-toggle="dropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" id="drop_dwn_list" role="menu" aria-labelledby="dropdownMenu">
+            <ol class="clearfix steps-list">
+                <li><span class="accounting-type"> {{ companyAccountingType }}</span><span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span> login</li>
+                <li class="active">Verify Chart of Accounts matching</li>
+                <li>Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+        </div>
+    </div>
+    <div class="expresso-logo-block" id="logo_block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <contact-us [showContact]="showContact"></contact-us>
+
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+        <div class="steps-block">
+            <ol class="clearfix steps-list" id="qbside" *ngIf="type=='quickbooks' || type=='xero' || type=='sage'">
+                <li><span class="accounting-type"> {{ companyAccountingType }}</span><span *ngIf="companyAccountingType == 'quickbooks'">&nbsp;Online</span> login</li>
+                <li class="active">Verify Chart of Accounts matching</li>
+                <li>Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="uploadside" *ngIf="type=='upload'">
+                <li>Upload CSV files</li>
+                <li class="active">Verify Chart of Accounts matching</li>
+                <li>Reporting &amp; sign off</li>
+            </ol>
+            <ol class="clearfix steps-list" id="qbdside" *ngIf="type=='quickbook-desktop'">
+                <li>Sync app download</li>
+                <li class="active">Verify Chart of Accounts matching</li>
+                <li>Reporting</li>
+                <li>Final sign off</li>
+            </ol>
+        </div>
+        <login-info></login-info>
+        <div class="logout-btn save-and-exit">
+            <a (click)="saveExit()" id="save_exit_btn">Save & Exit</a>
+        </div>
+    </div>
+</div>
+<div class="clearfix page-container">
+    <div class="alert alert-info alert-dismissable fade in alert-box" id="credit_debit" *ngIf="credit_debit === 'yes'">
+        <a href="#" class="close" id="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>Warning!</strong>
+        <p> Debit and Credit are not same for this month.</p>
+        <p>Check your report for more info</p></div>
+    <h1 class="page-title" id="coa_match_title">Are the following numbers correct?</h1>
+    <p class="page-desc text-blue" id="page_desc">If they're not correct, please click "No, Go Back" to adjust the matching parameters, and resubmit.</p>
+    <div class="dashboard-tabs-block coa-tabs-block">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs coa-sheet-tabs" role="tablist" id="coaTabs">
+            <li role="presentation" class="active" id='show_balance_sheet_list'>
+                <div class="tab-separator">
+                    <span></span>
+                </div>
+                <a id='show_balance_sheet' href="#balance-sheet" aria-controls="balance-sheet" role="tab" data-toggle="tab">
+                    <span>1</span>
+                    Balance Sheet
+                </a>
+            </li>
+            <li role="presentation" id="show_income_statement_list">
+                <div class="tab-separator">
+                    <span></span>
+                </div>
+                <a id='show_income_statement' href="#income-statement" aria-controls="income-statement" role="tab" data-toggle="tab">
+                    <span>2</span>
+                    Income Statement
+                </a>
+            </li>
+        </ul>
+        <!-- Tab panes -->
+        <div class="tab-content dashboard-tab-content">
+            <div role="tabpanel" class="tab-pane active" id="balance-sheet">
+                <div class="statement-table-block income">
+                    <p class="statement-table-title" id="balance_date">{{date | date:'MMM y'}}</p>
+                    <div class="table-responsive">
+                        <table class="table" id="asset_table">
+                            <tr *ngFor="let balance of balance_sheet_ass;let i = index" [ngClass]="{highlight: balance.fse_tag.is_total_row}">
+                                <td [attr.id]="'ass_desc_'+i">{{balance.fse_tag.description}}</td>
+                                <!-- see comment in dashboard-compoment as to why this is USD, in short dont change it to CAD .-->
+                                <td [attr.id]="'ass_is_total_'+i" *ngIf="balance.fse_tag.is_total_row">{{balance.value | currency:'USD':true:'1.0-0'}}</td>
+                                <td [attr.id]="'ass_bal_val_'+i" *ngIf="!balance.fse_tag.is_total_row">{{balance.value | number:'1.0-0'}}</td>
+                            </tr>
+                        </table>
+                        <table class="table" id="liab_table">
+                            <tr *ngFor="let balance of balance_sheet_liab;let i = index" [ngClass]="{highlight: balance.fse_tag.is_total_row}">
+                                <td [attr.id]="'liab_desc_'+i">{{balance.fse_tag.description}}</td>
+                                <td [attr.id]="'liab_is_total_'+i" *ngIf="balance.fse_tag.is_total_row">{{balance.value | currency:'USD':true:'1.0-0'}}</td>
+                                <td [attr.id]="'liab_bal_val_'+i" *ngIf="!balance.fse_tag.is_total_row">{{balance.value | number:'1.0-0'}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="submit-btn-block tab-actions">
+                    <button id='no_go_back' type="button" class="btn hollow-btn no-btn" (click)="goBack()">No, Go Back</button>
+                    <a class="btn hollow-btn" id="balanceTabBtn" href="#income-statement" data-toggle="tab" (click)="changeTab()">Yes, Next<span class="right-arrow-icon"></span></a>
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="income-statement">
+                <div class="statement-table-block income">
+                    <p class="statement-table-title" id="income_date">{{date | date:'MMM y'}}</p>
+                    <div class="table-responsive">
+                        <table class="table" id="income_table">
+                            <tr *ngFor="let income of income_statement;let i = index" [ngClass]="{highlight: income.fse_tag.is_total_row}">
+                                <td [attr.id]="'income_desc_'+i">{{income.fse_tag.description}}</td>
+                                <td [attr.id]="'income_is_total_'+i" *ngIf="income.fse_tag.is_total_row">{{income.value | currency:'USD':true:'1.0-0'}}</td>
+                                <td [attr.id]="'income_bal_val_'+i" *ngIf="!income.fse_tag.is_total_row">{{income.value | togglesign:negative_collection:income.fse_tag.name | number:'1.0-0'  }}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="submit-btn-block tab-actions">
+                    <button id='no_go_back_2' type="button" class="btn hollow-btn no-btn" (click)="goBack()">No, Go Back</button>
+                    <a id='yes_confirm' class="btn hollow-btn" (click)="updateCompanyMetaData()">Yes, Confirm<span class="tick-icon"></span></a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

@@ -1,0 +1,106 @@
+<header class="header tablet">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" id="drop_dwn_list" aria-labelledby="dropdownMenu">
+            <ol class="clearfix steps-list">
+                <li class="active">Upload CSV Files</li>
+                <li>Verify COA Matching</li>
+                <li>Reporting &amp; Sign Off</li>
+            </ol>
+        </div>
+    </div>
+    <div class="expresso-logo-block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <contact-us [showContact]="showContact"></contact-us>
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg tablet" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+        <div class="steps-block" id="steps">
+            <ol class="clearfix steps-list">
+                <li class="active">Upload CSV Files</li>
+                <li>Verify COA Matching</li>
+                <li>Reporting &amp; Sign Off</li>
+            </ol>
+        </div>
+        <login-info></login-info>
+        <div class="logout-btn save-and-exit">
+            <a (click)="saveExit()" id="save_exit_btn">Save & Exit</a>
+        </div>
+    </div>
+</div>
+<div class="vertical-height need-container tablet" [ngClass]="{nobrand:errordisplay,brand:!errordisplay}">
+    <div class="vert-center">
+        <div class="login-details-block">
+            <p class="title" id="note_title">What You'll Need</p>
+            <p class="description"  id="note_desc_1">
+                <span class="font-bold">Trial Balance CSV File<br>
+                    Chart of Accounts CSV File</span></p>
+            <p class="description"  id="note_desc_2">Please go to your accounting software and extract your Trial Balance and Chart of Account tables as CSV files.</p>
+            <p class="description"  id="note_desc_3">Once those files are ready, please upload or drag them into the corresponding categories.</p>
+        </div>
+    </div>
+</div>
+<div class="vertical-height csv-container">
+    <div class="vert-center csv">
+        <div class="csv-block">
+            <p class="csv-block-title" id="csv_block_title">Upload Your CSV Files</p>
+            <form name="" class="csv-upload-form" id="csv_form">
+                <div class="clearfix upload-container">
+                    <p class="csv-title" id="coa_title">Chart Of Accounts</p>
+                    <p class="error_message" id="coa_error">{{coa_message}}</p>
+                    <!-- <file-drop headertext="Drag file here or choose file" (onFileDrop)="dropped($event, 'coa')"
+                               (onFileOver)="dropped($event, 'coa')" (onFileLeave)="remove('coa')">
+                    </file-drop> -->
+                    <!-- <br> -->
+                    <div class="uploaded-block" id="coa_file" *ngFor="let item of coaFiles">
+                        <div class="uploaded-file-details">
+                            <div class="icon"></div>
+                            <p *ngIf="!item.relativePath" id="coa_name">{{ item.name }}</p>
+                            <p *ngIf="item.relativePath" id="coa_path">{{ item.relativePath }}</p>
+                        </div>
+                        <a id="ec_remove_coa" class="upload-action" (click)="remove('coa')"></a>
+                    </div>
+                    <div class="new-upload-block">
+                        <label>
+                            <input id='ec_choose_coa' type="file" name="chartofaccounts" value="choose file." (click) = 'resetFile($event)' (change)="fileChange($event, 'coa')" accept=".csv"/>
+                            <p class="choose-file-click" id="coa_click">Drag file here or <span id='choose_coa' >choose file.</span></p>
+                        </label>
+                    </div>
+                </div>
+                <div class="clearfix upload-container">
+                    <p class="csv-title" id="tb_title">Trial balance</p>
+                    <!-- <file-drop headertext="Drag file here or choose file" (onFileDrop)="dropped($event, 'trial')" 
+                               (onFileOver)="dropped($event, 'trial')" (onFileLeave)="remove('trial')">
+                    </file-drop> -->
+                    <!-- <br> -->
+                    <p class="error_message" id="tb_error">{{tb_message}}</p>
+                    <div class="uploaded-block" id="tb_file" *ngFor="let item of trialFiles">
+                         <div class="uploaded-file-details">
+                            <div class="icon"></div>
+                            <p *ngIf="!item.relativePath" id="tb_name">{{ item.name }}</p>
+                            <p *ngIf="item.relativePath" id="tb_path">{{ item.relativePath }}</p>
+                        </div>
+                        <a id='ec_remove_trial_balance' class="upload-action" (click)="remove('trial')"></a>
+                    </div>
+                    <div class="new-upload-block">
+                        <label>
+                            <input id='ec_choose_trial_balance' type="file" name="trial" value="choose file." (click) = 'resetFile($event)' (change)="fileChange($event, 'trial')" accept=".csv"/>
+                            <p class="choose-file-click"id="tb_click">Drag file here or <span id='choose_tb'>choose file.</span></p>
+                        </label>
+                    </div>
+            </div>
+             <button id="back_action" type="button" class="btn hollow-btn submit-back-btn" (click)="goBack()" [disabled]="account_status === 'ACCOUNTING_TYPE_CHOSEN'">Go Back</button>
+            <button type="submit" id="ec_csv_upload_button" class="btn csv-upload-btn" [disabled]="trialFiles.length < 0 && coaFiles.length < 0" (click)="uploadFiles()">Upload</button>
+        </form>
+    </div>
+</div>
+</div>
+
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

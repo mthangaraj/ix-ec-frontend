@@ -1,0 +1,8 @@
+input[class*="required-field"]:focus , textarea[class*="required-field"]:focus , select[class*="required-field"]:focus {
+  border: #DC6460 solid 1px !important;
+}
+
+
+.radio-required-field{
+  border: #DC6460 solid 1px !important;
+}

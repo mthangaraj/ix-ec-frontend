@@ -1,0 +1,70 @@
+<header class="header">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown" >
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" id="drop_dwn_list" aria-labelledby="dropdownMenu">
+            <div class="reports-actions-block">
+                <div class="next-report-date-block">
+                    <p class="title" id="nxt_report_txt">Next Reporting Date:</p>
+                    <p class="date" id="nxt_report">{{next_reporting_peroid | date:'MMMM d'}}</p>
+                </div>
+                <a id="prev-report-btn" [routerLink]="['/dashboard-prev-report']" class="btn prev-report-btn active">Previous Reports</a>
+                <a id="financial-review-btn" [routerLink]="['/dashboard']" class="btn financial-review-btn">Financial Overview</a>
+                <a id="log_out_btn" class="logout-btn" (click)="logOut()">Logout</a>
+            </div>
+        </div>
+    </div>
+    <div class="expresso-logo-block" id="logo_block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <contact-us [showContact]="showContact"></contact-us>
+
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg" detect-scroll (onScroll)="handleScroll($event)">
+    <div class="vert-center">
+        <div class="reports-actions-block">
+            <!-- Check if Reporting is Due  -->
+            <div *ngIf="!next_reporting_due && !reporting_in_progress" class="next-report-date-block">
+                <p class="title" id="next_report_text">Next Reporting Date:</p>
+                <p class="date" id="next_report">{{next_reporting_peroid | date:'MMMM, y'}}</p>
+            </div>
+            <div *ngIf="next_reporting_due" class="report-due-block">
+                <p id="report_due">Report due for
+                    <br> {{next_reporting_peroid | date:'MMMM, y'}}</p>
+                <a id='start_reporting' (click)="startMonthlyReporting()" class="btn start-reporting-btn">Start Reporting</a>
+            </div>
+            <div *ngIf="reporting_in_progress" class="report-due-block">
+                <p id="cur_report">Report in progress for
+                    <br> {{current_reporting_period | date:'MMMM, y'}}</p>
+                <a id='continue_reporting' (click)="continueMonthlyReporting()" class="btn start-reporting-btn">Continue Reporting</a>
+            </div>
+            <a id="previous_btn" [routerLink]="['/dashboard-prev-report']" class="btn prev-report-btn active">Previous Reports</a>
+            <a id="overview_btn" [routerLink]="['/dashboard']" class="btn financial-review-btn">Financial Overview</a>
+        </div>
+        <login-info></login-info>
+        <div class="logout-btn save-and-exit">
+            <a id="save_exit_btn" (click)="logOut()">Logout</a>
+        </div>
+    </div>
+</div>
+<div class="vertical-height reports-container">
+    <div class="vert-center">
+        <p class="page-title" id="page_title">Previous Reports</p>
+        <div class="reports-list-block">
+            <ul class="clearfix reports-list" id="report_list" *ngFor="let report of reports;let i= index">
+                <li>
+                    <a [attr.id]="'report_link'+i" [routerLink]="['/dashboard-signoff-prev-report', report.lookup_period]" class="report-link">
+                        {{report.period_ending | date : 'MMMM, y'}}
+                        <span *ngIf="report.status != 'Complete'">{{report.status}}</span> <span *ngIf="report.status == 'Complete'">Submitted {{report.submitted_on | date : 'MMM. d, y'}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<loading-message [showLoading]="showLoading" [loadingMessage]="loadingMessage"></loading-message>

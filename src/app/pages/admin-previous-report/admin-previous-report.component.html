@@ -1,0 +1,63 @@
+<header class="header admin">
+    <div class="dropdown hamburger-icon dark">
+        <div id="nav-icon3" role="button" data-toggle="dropdown">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+            <div class="reports-actions-block">
+                <div class="next-report-date-block">
+                    <p class="title">Next Reporting Date:</p>
+                    <p class="date">{{next_reporting_peroid | date:'MMMM d'}}</p>
+                </div>
+                <a [routerLink]="['/admin-previous-report', company_id, company_name]" class="btn prev-report-btn active">Previous Reports</a>
+                <a [routerLink]="['/admin-company-dashboard',company_id,company_name]" class="btn financial-review-btn">Financial Overview</a>
+            </div>
+        </div>
+    </div>
+    <div class="expresso-logo-block">
+        <img src="./assets/img/expresso-logo.png" class="white-logo">
+        <img src="./assets/img/expresso-logo-blue.png" class="blue-logo">
+    </div>
+    <div class="result-header">
+        <p>{{company_name}}</p>
+    </div>
+</header>
+<div class="vertical-height steps-container hamburger-menu brand-bg">
+    <div class="vert-center">
+        <div class="reports-actions-block">
+            <div class="next-report-date-block">
+                <p class="title">Next Reporting Date:</p>
+                <p class="date">{{next_reporting_peroid | date:'MMMM d'}}</p>
+            </div>
+            <a [routerLink]="['/admin-previous-report', company_id, company_name]" class="btn prev-report-btn active">Previous Reports</a>
+            <a [routerLink]="['/admin-company-dashboard',company_id,company_name]" class="btn financial-review-btn">Financial Overview</a>
+        </div>
+    </div>
+</div>
+<div class="vertical-height reports-container admin-prev-report-container">
+    <div class="vert-center">
+        <p class="page-title">Previous Reports</p>
+        <div class="reports-list-block">
+            <ul class="clearfix reports-list">
+                <li *ngFor="let report of reports">
+                    <a [routerLink]="['/admin-previous-report-detail',company_id,company_name, report.lookup_period]" class="report-link">
+                        {{report.lookup_period | date : 'MMMM'}}
+                        <span>{{report.status}} on {{report.period_ending | date : 'MMMM d, y'}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="animated-loader-sheen" *ngIf="showLoading">
+    <div class="loader">
+        <div class="dot-container">
+            <div class="dot"></div>
+            <div class="dot"></div>
+            <div class="dot"></div>
+        </div>
+    </div>
+</div>
